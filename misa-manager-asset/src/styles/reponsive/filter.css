@@ -1,0 +1,8 @@
+@media screen and (max-width: 1024px){
+    #txtSearch {
+        min-width: 250px !important;
+    }
+    .icon-search[data-v-55b474b0] {
+        background-position: 225px center;
+    }
+}

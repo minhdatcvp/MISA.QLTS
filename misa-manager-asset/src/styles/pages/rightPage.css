@@ -1,0 +1,18 @@
+
+/* Css cho phần bên phải */
+/*Kích thước bằng 100% trừ đi menu */
+.right-page {
+    width: calc(100% - 200px);
+    float: right;
+}
+/* class chinh lai kich thuoc right page khi an menu */
+.isRightPage {
+    width: calc(100% - 50px);
+    height: 100vh;
+}
+/* Css cho phần header dùng chung */
+header {
+    height: 50px;
+    background-color: white;
+    width: 100%;
+}

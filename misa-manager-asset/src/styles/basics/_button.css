@@ -1,0 +1,17 @@
+button.btn-add {
+    width: 96px;
+    height: 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    font-size: 13px;
+    background-color: #00abfe;
+    color: white;
+}
+
+button.btn-cancel {
+    background-color: white;
+    color: black;
+    border: 1px solid #e2e2e2;
+}

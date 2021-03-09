@@ -1,0 +1,25 @@
+@import './basics/_button.css';
+@import './basics/_input.css';
+@import './basics/_img.css';
+@import './basics/_font.css';
+@import './pages/menu.css';
+@import './pages/rightPage.css';
+@import './layout/table.css';
+@import './layout/form.css';
+@import './basics/_popup.css';
+@import './reponsive/filter.css';
+@import './layout/header.css';
+
+/* Cho tất cả các thể về mặc định và gán font chữ gg-sans*/
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: GoogleSans-Regular;
+    font-weight: 200;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}

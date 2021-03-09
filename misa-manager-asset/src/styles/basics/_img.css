@@ -1,0 +1,4 @@
+/* hình bàn tay khi trỏ vào các icon */
+img{
+    cursor: pointer;
+}

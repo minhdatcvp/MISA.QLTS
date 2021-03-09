@@ -1,0 +1,9 @@
+.input-search {
+    padding-top: 9px;
+    padding-left: 15px;
+    padding-bottom: 8px;
+    border: 1px solid #e2e2e2;
+    font-family: GoogleSans-Italic;
+    outline: none;
+    font-size: 13px;
+}
