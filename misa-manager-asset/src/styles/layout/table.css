@@ -15,13 +15,13 @@ table {
 
 /*----- Phần title------------------*/
 
-.table thead th {
+.table-data thead th {
     position: sticky;
     top: 0;
     background-color: white;
     border: none;
     font-size: 10px;
-    font-family: GoogleSans-Thin;
+    /* font-family: GoogleSans-Thin; */
     text-align: left;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -40,7 +40,7 @@ tbody {
 .table tbody td {
     font-size: 13px;
     color: #4d4f5c;
-    font-family: GoogleSans-Thin;
+    /* font-family: GoogleSans-Thin; */
     text-align: left;
     white-space: nowrap;
     text-overflow: ellipsis;

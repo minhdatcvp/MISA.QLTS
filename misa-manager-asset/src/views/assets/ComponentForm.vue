@@ -7,14 +7,20 @@
         <p>Thêm chứng từ ghi giảm</p>
         <div class="icon-header">
           <img :src="helpIcon" alt="icon" />
-          <img :src="closeIcon" alt="icon" />
-          <!-- @click="showOffForm" -->
+          <img :src="closeIcon" alt="icon" @click="showOffForm" />
         </div>
       </div>
       <div class="input_form">
         <div class="date_input">
           <label>Ngày ghi giảm</label>
-          <input class="input-search" type="date" />
+          <!-- <input class="input-search" type="date" /> -->
+          <date-picker
+          v-model="date"
+            value-type="YYYY-MM-DD"
+            format="DD-MM-YYYY"
+            class="datepicker"
+            placeholder="dd-mm-yyyy"
+          ></date-picker>
         </div>
         <div class="decrement_number">
           <label>Số chứng từ</label>
@@ -66,7 +72,7 @@
                 <td>@mdo</td>
               </tr>
               <tr>
-                <td scope="row" class="order">2</td>
+                <td scope="row" class="order">3</td>
                 <td>Jacob</td>
                 <td>Thornton</td>
                 <td class="cost_total">@fat</td>
@@ -75,7 +81,7 @@
                 <td>@mdo</td>
               </tr>
               <tr>
-                <td scope="row" class="order">2</td>
+                <td scope="row" class="order">4</td>
                 <td>Jacob</td>
                 <td>Thornton</td>
                 <td class="cost_total">@fat</td>
@@ -84,16 +90,7 @@
                 <td>@mdo</td>
               </tr>
               <tr>
-                <td scope="row" class="order">2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td class="cost_total">@fat</td>
-                <td>@fat</td>
-                <td class="cost_total">@fat</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td scope="row" class="order">2</td>
+                <td scope="row" class="order">5</td>
                 <td>Jacob</td>
                 <td>Thornton</td>
                 <td class="cost_total">@fat</td>
@@ -105,16 +102,30 @@
           </table>
         </div>
       </div>
+      <div class="event-line">
+        <div class="add-line">
+          <button type="button" class="btn-add">
+            <i class="fas fa-plus"></i>
+            <p>Thêm dòng</p>
+          </button>
+        </div>
+
+        <div class="sub-line">
+          <button type="button" class="btn-add">
+            <i class="far fa-trash-alt"></i>
+            <p>Xóa hết dòng</p>
+          </button>
+        </div>
+      </div>
       <footer>
         <!-- Khi click vào nút hủy tắt form và reset dữ liệu  -->
-        <button class="btn-add btn-cancel">
+        <button class="btn-add btn-cancel" @click.prevent="showOffForm">
           Hủy
         </button>
-        <!-- @click.prevent="showOffForm" -->
         <!-- Validate dữ liệu trên form rồi kiểm tra xem là thêm hay sửa  -->
         <button class="btn-add btn-submit">
           <!-- @click.prevent="addDataAsset" -->
-          Lưu
+          Đồng ý
         </button>
       </footer>
     </form>
@@ -122,7 +133,10 @@
 </template>
 
 <script>
+import DatePicker from "vue2-datepicker";
+import "vue2-datepicker/index.css";
 export default {
+  components: { DatePicker },
   props: {
     // dataAsset: Array, // Mảng tất cả dữ liệu truyền từ Comp-list xuống
     // dataDepartments: Array, // Mảng dữ liệu phòng ban truyền từ Comp-list xuống
@@ -150,8 +164,9 @@ export default {
         originalPrice: null,
         timeUse: null,
         wearRate: null,
-        wearValue: null
-      }
+        wearValue: null,
+      },
+      date:"",
       // maxAssetCode: 50, // giới hạn kí tự nhập vào ô mã tài sản
       // maxAssetName: 255, // giới hạn kí tự nhập vào ô tên tài sản
       // maxNumber: 9, // giới hạn các giá trị nhập số
@@ -391,10 +406,10 @@ export default {
     // /**
     //  * Tắt form và xóa dữ liệu item
     //  */
-    // showOffForm() {
-    //   this.$store.dispatch("offForm");
-    //   this.$emit("resetItem");
-    // }
+    showOffForm() {
+      this.$store.dispatch("offForm");
+      // this.$emit("resetItem");
+    },
     // /**
     //  * Click vào nút lưu thực hiện thêm data khi id null và sửa data khi id khác null
     //  */
@@ -570,7 +585,7 @@ export default {
     //     }
     //     return returnData;
     //   }
-  }
+  },
   // // async created() {
   // //   /**
   // //    * Gọi API lấy 1 tài sản theo id
@@ -588,7 +603,7 @@ export default {
 
 <style scoped>
 label {
-  font-family: "GoogleSans-Thin";
+  /* font-family: "GoogleSans-Thin"; */
   font-size: 13px;
   color: #373737;
 }
@@ -601,7 +616,7 @@ label {
   margin-left: 10px;
 }
 .input-search {
-  font-family: "GoogleSans-Thin";
+  /* font-family: "GoogleSans-Thin"; */
   height: 35px;
   width: 100%;
 }
@@ -678,14 +693,71 @@ Bảng danh sách tài sản
   border: 1px solid #e0e0e0;
   padding-top: 8px;
   padding-bottom: 7px;
+  white-space: nowrap;
   padding-left: 13px;
+  position: sticky;
+  top: -1;
 }
 .table-form tbody td {
   padding-top: 7px;
-  padding-bottom: 9px;
+  padding-bottom: 8px;
 }
 .table-asset {
-    height: 210px;
-    overflow: auto;
+  height: 210px;
 }
+/*--------------2 nút thêm và xóa--------*/
+.event-line button.btn-add {
+  width: 120px;
+  height: 32px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.event-line {
+  margin-left: 20px;
+  margin-top: 17px;
+  display: flex;
+}
+
+i.fas.fa-plus {
+  color: #00abfe;
+  font-size: 14px;
+  padding-top: 9px;
+  padding-left: 12px;
+}
+
+.add-line button.btn-add {
+  border: 1px solid #00abfe;
+  display: flex;
+}
+
+.add-line p {
+  font-size: 13px;
+  color: #00abfe;
+  padding-top: 6px;
+  padding-left: 11px;
+  font-weight: 100;
+}
+
+i.far.fa-trash-alt {
+  color: #7b7a8d;
+  font-size: 14px;
+  padding-top: 9px;
+  padding-left: 12px;
+}
+
+.sub-line button.btn-add {
+  border: 1px solid #e2e2e2;
+  display: flex;
+  margin-left: 21px;
+}
+
+.sub-line p {
+  font-size: 13px;
+  color: #212121;
+  padding-top: 6px;
+  padding-left: 11px;
+  font-weight: 100;
+}
+
 </style>

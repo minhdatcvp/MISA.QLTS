@@ -13,8 +13,7 @@
         />
       </div>
       <div class="filter-right">
-        <button type="button" class="btn-add">Thêm</button>
-        <!-- @click="showForm" -->
+        <button type="button" class="btn-add"  @click="showForm">Thêm</button>
         <!-- Icon refresh  -->
         <img :src="refreshIcon" alt="refresh" />
         <!-- @click="reRender" -->
@@ -89,10 +88,9 @@
           <h3>Xác nhận</h3>
           <p>Bạn chắc chắn muốn xóa tài sản này ?</p>
           <div class="btn-popup">
-            <button class="btn-add btn-cancel">
+            <button class="btn-add btn-cancel" @click="offPopupDelete">
               Hủy
             </button>
-            <!-- @click="offPopupDelete" -->
             <button class="btn-add btn-del">Xóa</button>
             <!-- @click="deleteItem" -->
           </div>
@@ -235,9 +233,9 @@ export default {
     /**
      * Hiển thị Form
      */
-    // showForm() {
-    //   this.$store.dispatch("onForm");
-    // },
+    showForm() {
+      this.$store.dispatch("onForm");
+    },
     /**
      * Sửa lại giá trị ngày tháng rồi đẩy dữ liệu lên form edit
      */
@@ -281,14 +279,14 @@ export default {
     },
     showPopupDeletes() {
       this.isPopup = true;
-    }
+    },
     /**
      * click vào icon xóa hiện ra popup
      */
-    // offPopupDelete() {
-    //   this.isPopup = false;
-    //   this.itemDelete = {};
-    // },
+    offPopupDelete() {
+      this.isPopup = false;
+      // this.itemDelete = {};
+    },
     /**
      * Xóa 1 object trong database ảo
      * Call api xóa trên database thực
