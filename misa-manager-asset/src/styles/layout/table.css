@@ -1,58 +1,147 @@
-
 /* Css cho phần danh sách tài sản */
+
 table {
     border: none;
     border-collapse: collapse;
     width: 100%;
     border-bottom: 1px solid #e2e2e2;
 }
+
 .table-data {
     height: calc(100% - 130px);
     overflow: auto;
 }
+
+
+/*----- Phần title------------------*/
+
 .table thead th {
     position: sticky;
     top: 0;
     background-color: white;
     border: none;
+    font-size: 10px;
+    font-family: GoogleSans-Thin;
+    text-align: left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-bottom: 12px;
+    padding-left: 15px;
 }
+
+
+/*------Phần thân bảng -------------*/
 
 tbody {
     overflow: auto;
 }
-.table th,.table td {
-    font-size: 14px;
+
+.table tbody td {
+    font-size: 13px;
+    color: #4d4f5c;
     font-family: GoogleSans-Thin;
-    font-weight: 200;
     text-align: left;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    padding-top: 10px;
+    padding-left: 12px;
+    padding-bottom: 11px;
+}
+
+.table tbody td,
+.table tbody th {
+    border: 1px solid #e2e2e2;
+    border-right: none;
     vertical-align: middle;
 }
-/* xóa viền ngoài cùng bên phải của bảng  */
-.table tbody td,.table tbody th {
-    border: 1.7px solid #e2e2e2;
-    border-right: none;
-}
-/* xóa viền ngoài cùng bên trái bảng  */
-tbody th{
-    text-align: center;
-    padding: 0;
-    border-left: none;
-}
-tr{
-    cursor: pointer;
-}
+
+
 /* Css cho khi hover vào item */
-table tbody tr:hover{
+
+table tbody tr:hover {
     background-color: #f0f8ff;
     transition: 0.4s;
 }
+
+
 /* Css cho khi click vào item */
-.highlight{
+
+.highlight {
     background-color: #f0f8ff;
+}
+
+
+/*-----Gía-----------------*/
+
+.cost_total {
+    text-align: right !important;
+    padding-right: 15px;
+    min-width: 140px;
+}
+
+
+/* Vẽ icon cho phần chức năng */
+
+.editIcon {
+    background: url("../../assets/icon.png") no-repeat -15px -15px;
+    width: 15px;
+    height: 16px;
+}
+
+.deleteIcon {
+    background: url("../../assets/icon.png") no-repeat -43px -14px;
+    width: 14px;
+    height: 15px;
+}
+
+td.fuctionCol {
+    display: flex;
+    border-bottom: none;
+    text-align: center;
+    min-width: 100px;
+    padding-left: 20px !important;
+}
+
+.fuctionCol div {
+    margin: 7px;
+    opacity: 0;
+    visibility: hidden;
+    border: none;
+}
+
+
+/*---------Căn giữa số thứ tự----------*/
+
+.order {
+    border-left: none;
+    text-align: center !important;
+    min-width: 45px;
+}
+
+
+/** 
+  Căn giữa ngày tháng
+*/
+
+.posted_date {
+    text-align: center !important;
+    min-width: 140px;
+}
+
+
+/* khi hover vào hiển thị chức năng */
+
+tbody tr:hover .fuctionCol div {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/*item nào được active thì hiển thị cột chức năg */
+
+.highlight .fuctionCol div {
+    opacity: 1;
+    visibility: visible;
 }
