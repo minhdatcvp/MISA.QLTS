@@ -44,7 +44,7 @@ tbody {
     text-align: left;
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
+    /* overflow: hidden; */
     padding-top: 10px;
     padding-left: 12px;
     padding-bottom: 11px;
@@ -88,12 +88,14 @@ table tbody tr:hover {
     background: url("../../assets/icon.png") no-repeat -15px -15px;
     width: 15px;
     height: 16px;
+    cursor: pointer;
 }
 
 .deleteIcon {
     background: url("../../assets/icon.png") no-repeat -43px -14px;
     width: 14px;
     height: 15px;
+    cursor: pointer;
 }
 
 td.fuctionCol {
@@ -114,7 +116,7 @@ td.fuctionCol {
 
 /*---------Căn giữa số thứ tự----------*/
 
-.order {
+.table-data .order {
     border-left: none;
     text-align: center !important;
     min-width: 45px;
@@ -144,4 +146,9 @@ tbody tr:hover .fuctionCol div {
 .highlight .fuctionCol div {
     opacity: 1;
     visibility: visible;
+}
+
+.table-data td.check-box {
+    border-left: none;
+    border-right: 1px solid #e2e2e2;
 }

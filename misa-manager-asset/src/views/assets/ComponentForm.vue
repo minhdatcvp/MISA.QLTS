@@ -15,7 +15,7 @@
           <label>Ngày ghi giảm</label>
           <!-- <input class="input-search" type="date" /> -->
           <date-picker
-          v-model="date"
+            v-model="date"
             value-type="YYYY-MM-DD"
             format="DD-MM-YYYY"
             class="datepicker"
@@ -41,62 +41,46 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th scope="col" width="40px" class="order">#</th>
-                <th scope="col" width="89px">Mã tài sản</th>
-                <th scope="col" width="221px">Tên tài sản</th>
-                <th scope="col" width="121px" class="cost_total">Nguyên giá</th>
-                <th scope="col" width="121px">HM lũy kế</th>
-                <th scope="col" width="132px" class="cost_total">
+                <th scope="col" style="width:40px;" class="order">#</th>
+                <th scope="col" style="width:89px;">Mã tài sản</th>
+                <th scope="col" style="width:221px;">Tên tài sản</th>
+                <th scope="col" style="width:121px;" class="cost_total">
+                  Nguyên giá
+                </th>
+                <th scope="col" style="width:121px;" class="cost_total">
+                  HM lũy kế
+                </th>
+                <th scope="col" style="width:132px;" class="cost_total">
                   Giá trị còn lại
                 </th>
-                <th scope="col" width="35px"></th>
+                <th scope="col" style="width:35px;"></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td scope="row" class="order">1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td class="cost_total">@mdo</td>
-                <td>@mdo</td>
-                <td class="cost_total">@mdo</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td scope="row" class="order">2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td class="cost_total">@fat</td>
-                <td>@mdo</td>
-                <td class="cost_total">@mdo</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td scope="row" class="order">3</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td class="cost_total">@fat</td>
-                <td>@fat</td>
-                <td class="cost_total">@fat</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td scope="row" class="order">4</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td class="cost_total">@fat</td>
-                <td>@fat</td>
-                <td class="cost_total">@fat</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td scope="row" class="order">5</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td class="cost_total">@fat</td>
-                <td>@fat</td>
-                <td class="cost_total">@fat</td>
-                <td>@mdo</td>
+              <tr v-for="(item, index) in dataAssetForm" :key="index">
+                <td scope="row" class="order">{{ index + 1 }}</td>
+                <td id="code">
+                  <v-select
+                    v-model="item.assetCode"
+                    :options="options"
+                    append-to-body
+                    :calculate-position="withPopper"
+                    @input="changeDataAsset(index, item.assetCode)"
+                  />
+                </td>
+                <td>{{ item.assetName }}</td>
+                <td class="cost_total">
+                  {{ formatPrice(item.originalPrice) }}
+                </td>
+                <td class="cost_total">
+                  {{ formatPrice(item.wearAccumulated) }}
+                </td>
+                <td>
+                  <input type="text" class="cost_total" />
+                </td>
+                <td @click="showPopupDelete(index)">
+                  <img :src="deleteIcon" alt="delete" />
+                </td>
               </tr>
             </tbody>
           </table>
@@ -104,14 +88,14 @@
       </div>
       <div class="event-line">
         <div class="add-line">
-          <button type="button" class="btn-add">
+          <button type="button" class="btn-add" @click.prevent="addLine">
             <i class="fas fa-plus"></i>
             <p>Thêm dòng</p>
           </button>
         </div>
 
         <div class="sub-line">
-          <button type="button" class="btn-add">
+          <button type="button" class="btn-add" @click.prevent="removeAllLine">
             <i class="far fa-trash-alt"></i>
             <p>Xóa hết dòng</p>
           </button>
@@ -129,12 +113,29 @@
         </button>
       </footer>
     </form>
+    <!-- Hiển thị Popup khi isPopup = true , ẩn khi isPopup = false  -->
+    <transition name="slide-fade">
+      <div class="popup" v-if="isPopup">
+        <div class="popupNotify">
+          <h3>Xác nhận</h3>
+          <p>Bạn chắc chắn muốn xóa tài sản này ?</p>
+          <div class="btn-popup">
+            <button class="btn-add btn-cancel" @click="offPopupDelete">
+              Hủy
+            </button>
+            <button class="btn-add btn-del" @click="removeItem">Xóa</button>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
+import "vue-select/dist/vue-select.css";
+import { createPopper } from "@popperjs/core";
 export default {
   components: { DatePicker },
   props: {
@@ -142,53 +143,110 @@ export default {
     // dataDepartments: Array, // Mảng dữ liệu phòng ban truyền từ Comp-list xuống
     // dataAssetTypes: Array, // Mảng dữ liệu loại tài sản truyền từ Comp-list xuống
     // itemTemp: Object // Dữ liệu 1 đối tượng để truyền vào form
+    idItem: String
   },
   data() {
     return {
       // Khai bao svg
       helpIcon: require("../../assets/icon/help.svg"),
       closeIcon: require("../../assets/icon/cancel.svg"),
+      deleteIcon: require("../../assets/icon/trash.svg"),
       // Dữ liệu item đẩy lên form
-      dataItem: {
-        assetCode: "",
-        assetId: "",
-        assetName: "",
-        assetTypeCode: "",
-        assetTypeId: "",
-        assetTypeName: "",
-        departmentCode: "",
-        departmentId: "",
-        departmentName: "",
-        increaseDate: "",
-        isUsed: null,
-        originalPrice: null,
-        timeUse: null,
-        wearRate: null,
-        wearValue: null,
-      },
-      date:"",
-      // maxAssetCode: 50, // giới hạn kí tự nhập vào ô mã tài sản
-      // maxAssetName: 255, // giới hạn kí tự nhập vào ô tên tài sản
-      // maxNumber: 9, // giới hạn các giá trị nhập số
-      // maxPrice: 10, // giới hạn nguyên giá
-      // isCheckCode: false, // thông báo lỗi khi không nhập mã hoặc trùng mã
-      // isCheckName: false, // thông báo khi không nhập tên
-      // msgCode: "", // tên nhắn lỗi
-      // msgName: "" // tin nhắn lỗi
+      date: "",
+      /**
+       * Dữ liệu hiển thị trên form
+       * Nếu là thêm mới chứng từ khi render sẽ rỗng
+       * Nếu là edit khi render gọi api chứng từ gán bằng các tài sản trong chứng từ rồi bind lên form
+       */
+      dataAssetForm: [
+        {
+          assetId: null,
+          assetCode: null,
+          assetName: null,
+          originalPrice: null,
+          wearAccumulated: null,
+          wearValue: null
+        },
+        {
+          assetId: null,
+          assetCode: null,
+          assetName: null,
+          originalPrice: null,
+          wearAccumulated: null,
+          wearValue: null
+        },
+        {
+          assetId: null,
+          assetCode: null,
+          assetName: null,
+          originalPrice: null,
+          wearAccumulated: null,
+          wearValue: null
+        },
+        {
+          assetId: null,
+          assetCode: null,
+          assetName: null,
+          originalPrice: null,
+          wearAccumulated: null,
+          wearValue: null
+        },
+        {
+          assetId: null,
+          assetCode: null,
+          assetName: null,
+          originalPrice: null,
+          wearAccumulated: null,
+          wearValue: null
+        }
+      ],
+      /**
+       * Dữ liệu tài sản gọi lên từ api để bind dữ liệu vào bảng trong form
+       */
+      dataAsset: [
+        {
+          assetId: "1",
+          assetCode: "LS0001",
+          assetName: "laptop1",
+          originalPrice: 10000000,
+          wearAccumulated: 1000000,
+          wearValue: 9000000
+        },
+        {
+          assetId: "2",
+          assetCode: "LS0002",
+          assetName: "laptop 2",
+          originalPrice: 10000000,
+          wearAccumulated: 1000000,
+          wearValue: 9000000
+        },
+        {
+          assetId: "3",
+          assetCode: "LS0003",
+          assetName: "laptop 3",
+          originalPrice: 10000000,
+          wearAccumulated: 1000000,
+          wearValue: 9000000
+        },
+        {
+          assetId: "4",
+          assetCode: "LS0004",
+          assetName: "laptop 4",
+          originalPrice: 10000000,
+          wearAccumulated: 1000000,
+          wearValue: 9000000
+        }
+      ],
+      textCode: "",
+      iData: 0,
+      isPopup: false,
+      itemDelete: {}
     };
   },
   /**
    * Lifecycle gán trước khi update thực hiện khi thay đổi mã thì thay đổi tên theo database
    */
   beforeUpdate() {
-    // this.dataAsset.forEach(element => {
-    //   if (element.assetTypeId == this.dataItem.assetTypeId) {
-    //     this.dataItem.assetTypeName = element.assetTypeName;
-    //   }
-    //   if (element.departmentId == this.dataItem.departmentId) {
-    //     this.dataItem.departmentName = element.departmentName;
-    //   }
-    // });
     // if (this.dataItem.timeUse != null) {
     //   setTimeout(() => {
     //     this.dataItem.wearRate = ((1 / this.dataItem.timeUse) * 100).toFixed(2);
@@ -202,8 +260,91 @@ export default {
     //     ).toFixed(2);
     //   }, 1000);
     // }
+    if (this.textCode != null) {
+      this.dataAsset.forEach(element => {
+        if (element.assetCode == this.textCode) {
+          this.dataAssetForm[this.iData].assetId = element.assetId;
+          this.dataAssetForm[this.iData].assetCode = element.assetCode;
+          this.dataAssetForm[this.iData].assetName = element.assetName;
+          this.dataAssetForm[this.iData].originalPrice = element.originalPrice;
+          this.dataAssetForm[this.iData].wearAccumulated =
+            element.wearAccumulated;
+          this.dataAssetForm[this.iData].wearValue = element.wearValue;
+        }
+      });
+    } else {
+      this.dataAssetForm[this.iData].assetId = null;
+      this.dataAssetForm[this.iData].assetCode = null;
+      this.dataAssetForm[this.iData].assetName = null;
+      this.dataAssetForm[this.iData].originalPrice = null;
+      this.dataAssetForm[this.iData].wearAccumulated = null;
+      this.dataAssetForm[this.iData].wearValue = null;
+    }
   },
   methods: {
+    /**
+     * Hiển thị drop-menu sang bên phải
+     */
+    withPopper(dropdownList, component, { width }) {
+      dropdownList.style.width = width;
+      const popper = createPopper(component.$refs.toggle, dropdownList, {});
+      return () => popper.destroy();
+    },
+    /**
+     * Thêm 1 dòng trong bảng
+     */
+    addLine() {
+      this.dataAssetForm.push({});
+    },
+    /**
+     * Xóa hết các dòng trong bảng
+     */
+    removeAllLine() {
+      this.textCode = "";
+      this.iData = 0;
+      this.dataAssetForm = [];
+    },
+    /**
+     * Gán giá trị vừa chọn cho textCode để tìm trong mảng tài sản dữ liệu mã đó rồi bind vào dữ liệu render
+     */
+    changeDataAsset(index, e) {
+      event.preventDefault();
+      this.textCode = e;
+      this.iData = index;
+    },
+    /**
+     * Xóa tài sản khi bấn xóa ở popup
+     */
+    removeItem() {
+      this.iData = 0;
+      this.textCode = "";
+      var dataTemp = this.dataAssetForm.splice(this.itemDelete, 1);
+      console.log(dataTemp);
+      this.offPopupDelete();
+    },
+    /**
+     * Mở popup xóa tài sản
+     */
+    showPopupDelete(item) {
+      this.isPopup = true;
+      this.itemDelete = item;
+    },
+    /**
+     * Đóng popup xóa
+     */
+    offPopupDelete() {
+      this.isPopup = false;
+      // this.itemDelete = {};
+    },
+    /**
+     * Format giá trên form
+     */
+    formatPrice(value) {
+      if (value != null) {
+        let val = (value / 1).toFixed(0).replace(".", ",");
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+    },
     // submitForm(e) {
     //   // To prevent the form from submitting
     //   e.preventDefault();
@@ -408,8 +549,8 @@ export default {
     //  */
     showOffForm() {
       this.$store.dispatch("offForm");
-      // this.$emit("resetItem");
-    },
+      this.$emit("resetItem");
+    }
     // /**
     //  * Click vào nút lưu thực hiện thêm data khi id null và sửa data khi id khác null
     //  */
@@ -525,6 +666,16 @@ export default {
     // // }
   },
   computed: {
+    /**
+     * lấy giá trị từ api tài sản đẩy vào mảng để hiển thị select
+     */
+    options() {
+      let assetC = [];
+      this.dataAsset.forEach(element => {
+        assetC.push(element.assetCode);
+      });
+      return assetC;
+    }
     //   originalPrice() {
     //     let price = null;
     //     if (this.dataItem.originalPrice != null) {
@@ -585,7 +736,7 @@ export default {
     //     }
     //     return returnData;
     //   }
-  },
+  }
   // // async created() {
   // //   /**
   // //    * Gọi API lấy 1 tài sản theo id
@@ -691,19 +842,35 @@ Bảng danh sách tài sản
   color: #212121;
   background-color: #e8e8e8;
   border: 1px solid #e0e0e0;
-  padding-top: 8px;
+  padding-top: 7px;
   padding-bottom: 7px;
   white-space: nowrap;
   padding-left: 13px;
   position: sticky;
-  top: -1;
+  top: -1px;
 }
 .table-form tbody td {
   padding-top: 7px;
   padding-bottom: 8px;
+  height: 35px;
 }
 .table-asset {
   height: 210px;
+  overflow: auto;
+}
+.table-asset .table {
+  margin-bottom: 0;
+}
+.table-asset input {
+  border: none;
+  padding: 0;
+}
+.table-asset input:focus {
+  outline: none;
+}
+td#code {
+  padding: 0;
+  position: relative;
 }
 /*--------------2 nút thêm và xóa--------*/
 .event-line button.btn-add {
@@ -759,5 +926,4 @@ i.far.fa-trash-alt {
   padding-left: 11px;
   font-weight: 100;
 }
-
 </style>

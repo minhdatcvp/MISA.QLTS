@@ -15,11 +15,9 @@
       <div class="filter-right">
         <button type="button" class="btn-add"  @click="showForm">Thêm</button>
         <!-- Icon refresh  -->
-        <img :src="refreshIcon" alt="refresh" />
-        <!-- @click="reRender" -->
+        <img :src="refreshIcon" alt="refresh" @click="reRender" />
         <!-- Icon delete  -->
-        <img :src="deleteIcon" alt="delete" />
-        <!-- @click="isdeleteAllItem" -->
+        <img :src="deleteIcon" alt="delete" @click="isdeleteAllItem"/>
       </div>
     </div>
     <!-- Mục danh sách item  -->
@@ -27,9 +25,8 @@
       <table class="table">
         <thead>
           <tr>
-            <th v-if="isCheckbox" width="1%">
-              <img :src="deleteIcon" alt="delete" />
-              <!-- @click="deletesAsset"  -->
+            <th v-if="isCheckbox" width="1%" >
+              <img :src="deleteIcon" alt="delete" @click="deletesAsset" />
             </th>
             <th width="2%" class="order">STT</th>
             <th width="6%" class="posted_date">NGÀY GHI GIẢM</th>
@@ -48,7 +45,7 @@
             :class="{ highlight: isActive == index }"
             @click="activeItem(index)"
           >
-            <td v-if="isCheckbox">
+            <td v-if="isCheckbox" class="check-box">
               <input
                 type="checkbox"
                 id="vehicle1"
@@ -67,7 +64,7 @@
               {{ formatPrice(item.cost_total) }}
             </td>
             <td class="fuctionCol">
-              <div class="editIcon" title="Sửa"></div>
+              <div class="editIcon" title="Sửa" @click="getItem(item)"></div>
               <div
                 class="deleteIcon"
                 @click="showPopupDelete(item)"
@@ -86,7 +83,7 @@
       <div class="popup" v-if="isPopup">
         <div class="popupNotify">
           <h3>Xác nhận</h3>
-          <p>Bạn chắc chắn muốn xóa tài sản này ?</p>
+          <p>Bạn chắc chắn muốn xóa chứng từ này ?</p>
           <div class="btn-popup">
             <button class="btn-add btn-cancel" @click="offPopupDelete">
               Hủy
@@ -100,6 +97,8 @@
     <!-- Hiển thị form khi isForm = true , ẩn khi isForm = false  -->
     <component-form
       v-if="isForm"
+      :idItem="idItem"
+      @resetItem="resetItem"
     />
     <!-- :dataAsset="assets"
       :dataAssetTypes="assetTypes"
@@ -129,7 +128,7 @@ export default {
       // Dữ liệu lấy về từ api
       decrement: [
         {
-          ref_decrement_id: "ID chứng từ",
+          ref_decrement_id: "1",
           organization_id: "Thuộc đơn vị",
           ref_no: "Số chứng từ",
           ref_type: 0,
@@ -145,7 +144,7 @@ export default {
           modified_date: "Ngày sửa"
         },
         {
-          ref_decrement_id: "ID chứng từ",
+          ref_decrement_id: "2",
           organization_id: "Thuộc đơn vị",
           ref_no: "Số chứng từ",
           ref_type: 0,
@@ -161,7 +160,7 @@ export default {
           modified_date: "Ngày sửa"
         },
         {
-          ref_decrement_id: "ID chứng từ",
+          ref_decrement_id: "3",
           organization_id: "Thuộc đơn vị",
           ref_no: "Số chứng từ",
           ref_type: 0,
@@ -177,6 +176,7 @@ export default {
           modified_date: "Ngày sửa"
         }
       ],
+      idItem:"", // id truyền xuống form
       isActive: 0, // lưu item đang được trỏ tới
       //   componentKey: 0, // Biến refresh table
       isCheckbox: false, // Hiển thị checkbox
@@ -185,7 +185,7 @@ export default {
       idDeletes: [], // lưu id delete
       //   departmentFilter: "", // id lọc phòng ban
       //  decrementTypeFilter: "", // id lọc loại
-      isPopup: false // đóng mở popup thông báo xóa
+      isPopup: false, // đóng mở popup thông báo xóa
       //   decrementTypes: [], // Dữ liệu loại tài sản
       //   departments: [] // Dữ liệu phòng ban
     };
@@ -213,23 +213,19 @@ export default {
     /**
      * Reset lại bảng dữ liệu
      */
-    // reRender() {
-    //   // this.componentKey += 1;
-    //   // this.textSearch = "";
-    //   // this.departmentFilter = "";
-    //   // this.assetTypeFilter = "";
-    //   location.reload();
-    // },
+    reRender() {
+      location.reload();
+    },
     /**
      * Bật checkbox để xáo nhiều item
      * Khi tắt checkbox bỏ tích các checkbox
      */
-    // isdeleteAllItem() {
-    //   this.isCheckbox = !this.isCheckbox;
-    //   if (this.isCheckbox == false) {
-    //     this.idDeletes = [];
-    //   }
-    // },
+    isdeleteAllItem() {
+      this.isCheckbox = !this.isCheckbox;
+      if (this.isCheckbox == false) {
+        this.idDeletes = [];
+      }
+    },
     /**
      * Hiển thị Form
      */
@@ -239,20 +235,17 @@ export default {
     /**
      * Sửa lại giá trị ngày tháng rồi đẩy dữ liệu lên form edit
      */
-    // getItem(item) {
-    //   if (item.posted_date != null) {
-    //     item.posted_date = item.posted_date.substring(0, 10);
-    //   }
-    //   this.itemTemp = item;
-    //   this.showForm();
-    // },
+    getItem(item) {
+      this.idItem = item.ref_decrement_id;
+      this.showForm();
+    },
     /**
      * Đưa dữ liệu đẩy lên form về rỗng
      * để khi click vào insert không còn dữ liệu
      */
-    // resetItem() {
-    //   this.itemTemp = {};
-    // },
+    resetItem() {
+      this.idItem = "";
+    },
     /**
      * Format lại ngày tháng năm
      */
@@ -333,19 +326,19 @@ export default {
     /**
      * Xóa nhiều tài sản cùng 1 lúc
      */
-    // deletesAsset() {
-    //   if (this.idDeletes.length == 0) {
-    //     // alert("Bạn chưa chọn tài sản xóa");
-    //     this.$notify({
-    //       group: "foo",
-    //       title: "Cảnh báo",
-    //       text: "Bạn chưa chọn tài sản xóa!",
-    //       type: "error"
-    //     });
-    //   } else {
-    //     this.showPopupDeletes();
-    //   }
-    // }
+    deletesAsset() {
+      if (this.idDeletes.length == 0) {
+        // alert("Bạn chưa chọn tài sản xóa");
+        this.$notify({
+          group: "foo",
+          title: "Cảnh báo",
+          text: "Bạn chưa chọn tài sản xóa!",
+          type: "error"
+        });
+      } else {
+        this.showPopupDeletes();
+      }
+    }
   },
   computed: {
     /**
@@ -447,6 +440,7 @@ export default {
   padding-top: 9px;
   padding-left: 15px;
   padding-bottom: 8px;
+  font-style: italic;
 }
 .icon-search {
   background-image: url("../../assets/search.png");

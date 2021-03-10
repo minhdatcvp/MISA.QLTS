@@ -16,12 +16,13 @@
     font-size: 15px;
     font-weight: 500;
     color: #212121;
-    margin: 8px 17px;
+    margin: 5px 17px;
 }
 
 .arrow-up {
     margin-left: 9px;
     background-color: #ffffff;
+    margin-top: 4px;
 }
 
 .infomation input {

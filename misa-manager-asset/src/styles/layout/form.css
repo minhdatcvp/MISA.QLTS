@@ -46,6 +46,9 @@ form footer {
     text-align: right;
 }
 
+
+/*---------Bảng date--------------*/
+
 .datepicker.mx-datepicker {
     width: 149px;
     height: 31px;
@@ -60,4 +63,14 @@ form footer {
     border: 1px solid #e2e2e2;
     text-align: right;
     height: 31px;
+}
+
+.mx-table-date .today {
+    color: white;
+    background-color: #2a90e9;
+}
+
+.mx-calendar-content td.cell:hover {
+    color: white;
+    background-color: #2a90e9;
 }

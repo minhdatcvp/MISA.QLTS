@@ -23,3 +23,15 @@ body {
     overflow-x: hidden;
     overflow-y: hidden;
 }
+
+#code .vs__dropdown-toggle {
+    border: none !important;
+}
+
+.vs__open-indicator {
+    display: none;
+}
+
+.vs__actions {
+    display: none;
+}
