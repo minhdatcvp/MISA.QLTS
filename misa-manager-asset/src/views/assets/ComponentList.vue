@@ -56,7 +56,7 @@
             </td>
             <td class="order">{{ index + 1 }}</td>
             <td class="posted_date">
-              {{ item.posted_date }}
+              {{ format_date(item.posted_date) }}
             </td>
             <td>{{ item.ref_no }}</td>
             <td>{{ item.journal_memo }}</td>
@@ -116,7 +116,7 @@
 
 <script>
 import ComponentForm from "./ComponentForm.vue";
-// import moment from 'moment-timezone'
+import moment from "moment";
 export default {
   components: {
     ComponentForm
@@ -132,11 +132,11 @@ export default {
           organization_id: "Thuộc đơn vị",
           ref_no: "Số chứng từ",
           ref_type: 0,
-          ref_date: "9-3-2021",
+          ref_date: "2021-03-06",
           ref_detail: "Chi tiết danh sách tài sản của chứng từ",
           journal_memo: "Diễn giải",
-          posted_date: "9-3-2021",
-          tracked_year: "9-3-2021",
+          posted_date: "2021-03-06",
+          tracked_year: "2021-03-06",
           cost_total: 2000000,
           created_by: "Người tạo",
           created_date: "Ngày tạo",
@@ -148,11 +148,11 @@ export default {
           organization_id: "Thuộc đơn vị",
           ref_no: "Số chứng từ",
           ref_type: 0,
-          ref_date: "9-3-2021",
+          ref_date: "2021-03-06",
           ref_detail: "Chi tiết danh sách tài sản của chứng từ",
           journal_memo: "Diễn giải",
-          posted_date: "9-3-2021",
-          tracked_year: "9-3-2021",
+          posted_date: "2021-03-06",
+          tracked_year: "2021-03-06",
           cost_total: 2000000,
           created_by: "Người tạo",
           created_date: "Ngày tạo",
@@ -164,11 +164,11 @@ export default {
           organization_id: "Thuộc đơn vị",
           ref_no: "Số chứng từ",
           ref_type: 0,
-          ref_date: "9-3-2021",
+          ref_date: "2021-03-06",
           ref_detail: "Chi tiết danh sách tài sản của chứng từ",
           journal_memo: "Diễn giải",
-          posted_date: "9-3-2021",
-          tracked_year: "9-3-2021",
+          posted_date: "2021-03-06",
+          tracked_year: "2021-03-06",
           cost_total: 2000000,
           created_by: "Người tạo",
           created_date: "Ngày tạo",
@@ -249,11 +249,11 @@ export default {
     /**
      * Format lại ngày tháng năm
      */
-    // format_date(value) {
-    //   if (value) {
-    //     return moment(String(value)).format("DD-MM-YYYY");
-    //   }
-    // },
+    format_date(value) {
+      if (value) {
+        return moment(String(value)).format("DD-MM-YYYY");
+      }
+    },
     /**
      * Format giá từ dạng 1000 -> 1.000
      */

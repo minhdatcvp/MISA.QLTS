@@ -62,7 +62,10 @@ tbody {
 
 table tbody tr:hover {
     background-color: #f0f8ff;
-    transition: 0.4s;
+}
+
+table tbody tr:hover input.cost_total {
+    background-color: #f0f8ff;
 }
 
 

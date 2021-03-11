@@ -28,12 +28,15 @@
         </div>
       </div>
       <div class="journal_memo">
-        <label>Lý do điều chuyển</label>
-        <textarea
-          name="journal_memo"
-          id="journal_memo"
-          class="input-search"
-        ></textarea>
+        <label>Lý do ghi giảm</label>
+        <div class="memo">
+          <textarea
+            name="journal_memo"
+            id="journal_memo"
+            class="memo"
+            rows="3"
+          ></textarea>
+        </div>
       </div>
       <div class="table-form">
         <p>Danh sách tài sản</p>
@@ -53,7 +56,7 @@
                 <th scope="col" style="width:132px;" class="cost_total">
                   Giá trị còn lại
                 </th>
-                <th scope="col" style="width:35px;"></th>
+                <th scope="col" style="width:35px;" class="iconDelete"></th>
               </tr>
             </thead>
             <tbody>
@@ -66,6 +69,7 @@
                     append-to-body
                     :calculate-position="withPopper"
                     @input="changeDataAsset(index, item.assetCode)"
+                    label="assetCode"
                   />
                 </td>
                 <td>{{ item.assetName }}</td>
@@ -76,9 +80,16 @@
                   {{ formatPrice(item.wearAccumulated) }}
                 </td>
                 <td>
-                  <input type="text" class="cost_total" />
+                  <input
+                    type="text"
+                    class="cost_total"
+                    :value="item.wearValue"
+                    @input="wearValueInput(index)"
+                    @blur="handleBlurWearValue(index)"
+                    @keypress="onlyNumber"
+                  />
                 </td>
-                <td @click="showPopupDelete(index)">
+                <td @click="showPopupDelete(item)" class="iconDelete">
                   <img :src="deleteIcon" alt="delete" />
                 </td>
               </tr>
@@ -246,41 +257,7 @@ export default {
   /**
    * Lifecycle gán trước khi update thực hiện khi thay đổi mã thì thay đổi tên theo database
    */
-  beforeUpdate() {
-    // if (this.dataItem.timeUse != null) {
-    //   setTimeout(() => {
-    //     this.dataItem.wearRate = ((1 / this.dataItem.timeUse) * 100).toFixed(2);
-    //   }, 1000);
-    // }
-    // if (this.dataItem.originalPrice != null) {
-    //   setTimeout(() => {
-    //     this.dataItem.wearValue = (
-    //       (this.dataItem.originalPrice * this.dataItem.wearRate) /
-    //       100
-    //     ).toFixed(2);
-    //   }, 1000);
-    // }
-    if (this.textCode != null) {
-      this.dataAsset.forEach(element => {
-        if (element.assetCode == this.textCode) {
-          this.dataAssetForm[this.iData].assetId = element.assetId;
-          this.dataAssetForm[this.iData].assetCode = element.assetCode;
-          this.dataAssetForm[this.iData].assetName = element.assetName;
-          this.dataAssetForm[this.iData].originalPrice = element.originalPrice;
-          this.dataAssetForm[this.iData].wearAccumulated =
-            element.wearAccumulated;
-          this.dataAssetForm[this.iData].wearValue = element.wearValue;
-        }
-      });
-    } else {
-      this.dataAssetForm[this.iData].assetId = null;
-      this.dataAssetForm[this.iData].assetCode = null;
-      this.dataAssetForm[this.iData].assetName = null;
-      this.dataAssetForm[this.iData].originalPrice = null;
-      this.dataAssetForm[this.iData].wearAccumulated = null;
-      this.dataAssetForm[this.iData].wearValue = null;
-    }
-  },
+  beforeUpdate() {},
   methods: {
     /**
      * Hiển thị drop-menu sang bên phải
@@ -307,9 +284,9 @@ export default {
     /**
      * Gán giá trị vừa chọn cho textCode để tìm trong mảng tài sản dữ liệu mã đó rồi bind vào dữ liệu render
      */
-    changeDataAsset(index, e) {
+    changeDataAsset(index, dl) {
       event.preventDefault();
-      this.textCode = e;
+      this.textCode = dl;
       this.iData = index;
     },
     /**
@@ -318,8 +295,7 @@ export default {
     removeItem() {
       this.iData = 0;
       this.textCode = "";
-      var dataTemp = this.dataAssetForm.splice(this.itemDelete, 1);
-      console.log(dataTemp);
+      this.dataAssetForm.splice(this.itemDelete, 1);
       this.offPopupDelete();
     },
     /**
@@ -342,7 +318,35 @@ export default {
     formatPrice(value) {
       if (value != null) {
         let val = (value / 1).toFixed(0).replace(".", ",");
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    },
+    /**
+     * Format giá trị hiển thị giá trị còn lại
+     */
+    wearValueInput(index) {
+      event.preventDefault();
+      this.dataAssetForm[index].wearValue = event.target.value;
+    },
+    /**
+     * Format giá khi click ra ngoài
+     */
+    handleBlurWearValue(index) {
+      // console.log(event.target.value)
+      this.dataAssetForm[
+        index
+      ].wearValue = event.target.value
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    /**
+     * Input chỉ đc nhập số
+     */
+    onlyNumber($event) {
+      let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+        // 46 is dot
+        $event.preventDefault();
       }
     },
     // submitForm(e) {
@@ -672,10 +676,31 @@ export default {
     options() {
       let assetC = [];
       this.dataAsset.forEach(element => {
-        assetC.push(element.assetCode);
+        // assetC.push(element.assetCode);
+        let optionCode = {};
+        optionCode.assetCode = element.assetCode;
+        optionCode.disabled = true;
+        assetC.push(optionCode);
       });
       return assetC;
     }
+    // bindDataForm() {
+    //   if (this.textCode != "") {
+    //     this.dataAsset.forEach(element => {
+    //       if (element.assetCode == this.textCode) {
+    //         this.dataAssetForm[this.iData].assetId = element.assetId;
+    //         this.dataAssetForm[this.iData].assetCode = element.assetCode;
+    //         this.dataAssetForm[this.iData].assetName = element.assetName;
+    //         this.dataAssetForm[this.iData].originalPrice =
+    //           element.originalPrice;
+    //         this.dataAssetForm[this.iData].wearAccumulated =
+    //           element.wearAccumulated;
+    //         this.dataAssetForm[this.iData].wearValue = element.wearValue;
+    //       }
+    //     });
+    //   }
+    //   return this.dataAssetForm;
+    // }
     //   originalPrice() {
     //     let price = null;
     //     if (this.dataItem.originalPrice != null) {
@@ -736,6 +761,35 @@ export default {
     //     }
     //     return returnData;
     //   }
+  },
+  watch: {
+    textCode: function() {
+      if (this.textCode != null) {
+        this.dataAsset.forEach(element => {
+          if (element.assetCode == this.textCode.assetCode) {
+            this.dataAssetForm[this.iData].assetId = element.assetId;
+            this.dataAssetForm[this.iData].assetCode = element.assetCode;
+            this.dataAssetForm[this.iData].assetName = element.assetName;
+            this.dataAssetForm[this.iData].originalPrice =
+              element.originalPrice;
+            this.dataAssetForm[this.iData].wearAccumulated =
+              element.wearAccumulated;
+            this.dataAssetForm[this.iData].wearValue = element.wearValue;
+          }
+        });
+        // this.options.forEach(element => {
+        //   if(this.textCode == element.assetCode)
+        // });
+      } else {
+        this.dataAssetForm[this.iData].assetId = null;
+        this.dataAssetForm[this.iData].assetCode = null;
+        this.dataAssetForm[this.iData].assetName = null;
+        this.dataAssetForm[this.iData].originalPrice = null;
+        this.dataAssetForm[this.iData].wearAccumulated = null;
+        this.dataAssetForm[this.iData].wearValue = null;
+      }
+      this.textCode = "";
+    }
   }
   // // async created() {
   // //   /**
@@ -813,6 +867,8 @@ p.textWarning {
   padding-top: 8px;
   padding-bottom: 7px;
   padding-left: 14px;
+  font-size: 13px;
+  color: #373737;
 }
 /**
 Phần textarea
@@ -821,12 +877,21 @@ Phần textarea
   margin-top: 18px;
   margin-left: 20px;
 }
-
 textarea#journal_memo {
+  width: 100%;
+  padding: 0;
+  border: none;
+}
+.memo {
   display: block;
   width: 750px;
-  height: 63px;
   resize: none;
+  border: 1px solid #e2e2e2;
+  outline: none;
+  padding-top: 9px;
+  padding-left: 15px;
+  padding-bottom: 8px;
+  font-size: 13px;
 }
 /**.date_input
 Bảng danh sách tài sản
@@ -864,6 +929,10 @@ Bảng danh sách tài sản
 .table-asset input {
   border: none;
   padding: 0;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  color: #373737;
 }
 .table-asset input:focus {
   outline: none;
@@ -871,6 +940,9 @@ Bảng danh sách tài sản
 td#code {
   padding: 0;
   position: relative;
+}
+.table-asset .iconDelete {
+  padding-left: 12px;
 }
 /*--------------2 nút thêm và xóa--------*/
 .event-line button.btn-add {
