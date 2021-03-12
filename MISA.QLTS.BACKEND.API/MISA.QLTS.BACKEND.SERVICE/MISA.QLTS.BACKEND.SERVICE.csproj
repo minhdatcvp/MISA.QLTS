@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MISA.QLTS.BACKEND.COMMON\MISA.QLTS.BACKEND.COMMON.csproj" />
+    <ProjectReference Include="..\MISA.QLTS.BACKEND.DATALAYER\MISA.QLTS.BACKEND.DATALAYER.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -430,7 +430,6 @@ export default {
 .filter-bar {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
   height: 50px;
 }
 /*-------- ô input tìm kiếm------------------- */

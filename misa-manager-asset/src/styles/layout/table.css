@@ -45,9 +45,9 @@ tbody {
     white-space: nowrap;
     text-overflow: ellipsis;
     /* overflow: hidden; */
-    padding-top: 10px;
+    padding-top: 3px;
     padding-left: 12px;
-    padding-bottom: 11px;
+    padding-bottom: 2px;
 }
 
 .table tbody td,
@@ -103,7 +103,7 @@ table tbody tr:hover input.cost_total {
 
 td.fuctionCol {
     display: flex;
-    border-bottom: none;
+    border-bottom: none !important;
     text-align: center;
     min-width: 100px;
     padding-left: 20px !important;

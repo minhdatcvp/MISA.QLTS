@@ -318,7 +318,7 @@ export default {
     formatPrice(value) {
       if (value != null) {
         let val = (value / 1).toFixed(0).replace(".", ",");
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       }
     },
     /**
@@ -337,7 +337,7 @@ export default {
         index
       ].wearValue = event.target.value
         .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
     /**
      * Input chỉ đc nhập số
