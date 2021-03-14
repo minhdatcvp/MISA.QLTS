@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MISA.QLTS.BACKEND.DATALAYER.Interface
 {
-    public interface IAssetData : IBaseData<Asset>
+    public interface IAssetData : IBaseData<FixedAsset>
     {
     }
 }

@@ -7,13 +7,13 @@ using System.Text;
 
 namespace MISA.QLTS.BACKEND.DATALAYER.Entity
 {
-    public class AssetData : BaseData<Asset>,IAssetData
+    public class AssetData : BaseData<FixedAsset>,IAssetData
     {
         // Khởi tạo tham chiếu interface
-        private readonly IDataConnection<Asset> _dataConnection;
+        private readonly IDataConnection<FixedAsset> _dataConnection;
 
         #region Contructor
-        public AssetData(IDataConnection<Asset> dataConnection) : base(dataConnection)
+        public AssetData(IDataConnection<FixedAsset> dataConnection) : base(dataConnection)
         {
             _dataConnection = dataConnection;
         }

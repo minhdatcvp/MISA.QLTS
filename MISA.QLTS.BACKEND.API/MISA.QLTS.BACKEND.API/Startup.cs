@@ -41,11 +41,11 @@ namespace MISA.QLTS.BACKEND.API
             services.AddScoped(typeof(IDataConnection<>), typeof(DataConnection<>));
             //DataLayer
             services.AddScoped<IAssetData, AssetData>();
-            //services.AddScoped<IDbConnectionAssetType, DbConnectionAssetType>();
+            services.AddScoped<IRefDecrementData, RefDecrementData>();
             //services.AddScoped<IDbConnectionDepartment, DbConnectionDepartment>();
             //Service
             services.AddScoped<IAssetService, AssetService>();
-            //services.AddScoped<IAssetTypeService, AssetTypeService>();
+            services.AddScoped<IRefDecrementService, RefDecrementService>();
             //services.AddScoped<IDepartmentService, DepartmentService>();
 
             // xu ly cors

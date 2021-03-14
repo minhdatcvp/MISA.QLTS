@@ -25,9 +25,6 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         /// Lấy toàn bộ dữ liệu đối tượng
         /// </summary>
         /// <returns>Danh sách dữ liệu dối tượng</returns>
-        
-
-        // GET: api/<BasesController>
         [HttpGet]
         public IActionResult Get()
         {
@@ -39,30 +36,94 @@ namespace MISA.QLTS.BACKEND.API.Controllers
             else
                 return StatusCode(200, res.Data);
         }
-
-        // GET api/<BasesController>/5
+        /// <summary>
+        /// Lấy dữ liệu theo id
+        /// </summary>
+        /// <param name="id">id thực thể</param>
+        /// <returns>Dữ liệu cần lấy theo id</returns>
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult GetById(Guid id)
         {
-            return "value";
-        }
+            var res = _baseService.GetById(id);
+            var result = res.Data as List<T>;
+            // Nếu có kết quả trả về result.Count > 0 thì trả về 200 
+            return StatusCode(200, res.Data);
 
-        // POST api/<BasesController>
+        }
+        // POST api/<CustomersController>
+        /// <summary>
+        /// Thêm đối tượng
+        /// </summary>
+        /// <param name="entity">Thực thể</param>
+        /// <returns>Responsive tương ứng cho Client (201- thành công, ...)</returns>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] T entity)
         {
-        }
+            // Gọi đến hàm Insert thực hiện validate -> thêm
+            var res = _baseService.Insert(entity);
 
-        // PUT api/<BasesController>/5
+            if (res.Success == false)
+            {
+                return StatusCode(400, res.Data);
+            }
+            else if (res.Success == true && (int)res.Data > 0)
+            {
+                return StatusCode(201, res.Data);
+            }
+            else
+            {
+                return StatusCode(200, res.Data);
+            }
+        }
+        // POST api/<CustomersController>
+        /// <summary>
+        /// Sửa đối tượng
+        /// </summary>
+        /// <param name="entity">Thực thể</param>
+        /// <returns>Responsive tương ứng cho Client (201- thành công, ...)</returns>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(T entity, Guid id)
         {
-        }
+            // Gọi đến hàm Insert thực hiện validate -> Sửa
+            var res = _baseService.Update(entity, id);
 
-        // DELETE api/<BasesController>/5
+            if (res.Success == false)
+            {
+                return StatusCode(400, res.Data);
+            }
+            else if (res.Success == true && (int)res.Data > 0)
+            {
+                return StatusCode(201, res.Data);
+            }
+            else
+            {
+                return StatusCode(200, res.Data);
+            }
+        }
+        /// <summary>
+        /// Xóa đối tượng
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(Guid id)
         {
+            // Gọi đến hàm Insert thực hiện validate -> Xóa
+            var res = _baseService.Delete(id);
+
+            if (res.Success == false)
+            {
+                return StatusCode(400, res.Data);
+            }
+            else if (res.Success == true && (int)res.Data > 0)
+            {
+                return StatusCode(201, res.Data);
+            }
+            else
+            {
+                return StatusCode(200, res.Data);
+            }
         }
     }
 }

@@ -7,12 +7,12 @@ using System.Text;
 
 namespace MISA.QLTS.BACKEND.SERVICE.Entity
 {
-    public class AssetService : BaseService<Asset>, IAssetService
+    public class AssetService : BaseService<FixedAsset>, IAssetService
     {
         //Khởi tạo tham chiếu tới DbConnectionAsset
         private readonly IAssetData _dbConnectionAsset;
         #region Contructor
-        public AssetService(IBaseData<Asset> baseData, IAssetData dbConnectionAsset) : base(baseData)
+        public AssetService(IBaseData<FixedAsset> baseData, IAssetData dbConnectionAsset) : base(baseData)
         {
             _dbConnectionAsset = dbConnectionAsset;
         }

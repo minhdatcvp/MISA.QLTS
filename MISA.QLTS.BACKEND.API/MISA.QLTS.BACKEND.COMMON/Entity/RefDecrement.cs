@@ -8,7 +8,7 @@ namespace MISA.QLTS.BACKEND.COMMON.Entity
     /// Thông tin chứng từ ghi giảm
     /// </summary>
     /// CreatedBy: NMDAT(12/03/2021)
-    public class Decrement
+    public class RefDecrement
     {
         #region Contructor
         /// <summary>

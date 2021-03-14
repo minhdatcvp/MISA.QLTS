@@ -44,19 +44,19 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th scope="col" style="width:40px;" class="order">#</th>
-                <th scope="col" style="width:89px;">Mã tài sản</th>
-                <th scope="col" style="width:221px;">Tên tài sản</th>
-                <th scope="col" style="width:121px;" class="cost_total">
+                <th scope="col" style="width: 40px" class="order">#</th>
+                <th scope="col" style="width: 89px">Mã tài sản</th>
+                <th scope="col" style="width: 221px">Tên tài sản</th>
+                <th scope="col" style="width: 121px" class="cost_total">
                   Nguyên giá
                 </th>
-                <th scope="col" style="width:121px;" class="cost_total">
+                <th scope="col" style="width: 121px" class="cost_total">
                   HM lũy kế
                 </th>
-                <th scope="col" style="width:132px;" class="cost_total">
+                <th scope="col" style="width: 132px" class="cost_total">
                   Giá trị còn lại
                 </th>
-                <th scope="col" style="width:35px;" class="iconDelete"></th>
+                <th scope="col" style="width: 35px" class="iconDelete"></th>
               </tr>
             </thead>
             <tbody>
@@ -64,17 +64,17 @@
                 <td scope="row" class="order">{{ index + 1 }}</td>
                 <td id="code">
                   <v-select
-                    v-model="item.assetCode"
+                    v-model="item.fixed_asset_code"
                     :options="options"
                     append-to-body
                     :calculate-position="withPopper"
-                    @input="changeDataAsset(index, item.assetCode)"
+                    @input="changeDataAsset(index, item.fixed_asset_code)"
                     label="assetCode"
                   />
                 </td>
-                <td>{{ item.assetName }}</td>
+                <td>{{ item.fixed_asset_name }}</td>
                 <td class="cost_total">
-                  {{ formatPrice(item.originalPrice) }}
+                  {{ formatPrice(item.cost) }}
                 </td>
                 <td class="cost_total">
                   {{ formatPrice(item.wearAccumulated) }}
@@ -143,6 +143,7 @@
 </template>
 
 <script>
+import * as axios from "axios";
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 import "vue-select/dist/vue-select.css";
@@ -154,7 +155,7 @@ export default {
     // dataDepartments: Array, // Mảng dữ liệu phòng ban truyền từ Comp-list xuống
     // dataAssetTypes: Array, // Mảng dữ liệu loại tài sản truyền từ Comp-list xuống
     // itemTemp: Object // Dữ liệu 1 đối tượng để truyền vào form
-    idItem: String
+    idItem: String,
   },
   data() {
     return {
@@ -176,7 +177,7 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null
+          wearValue: null,
         },
         {
           assetId: null,
@@ -184,7 +185,7 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null
+          wearValue: null,
         },
         {
           assetId: null,
@@ -192,7 +193,7 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null
+          wearValue: null,
         },
         {
           assetId: null,
@@ -200,7 +201,7 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null
+          wearValue: null,
         },
         {
           assetId: null,
@@ -208,50 +209,29 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null
-        }
+          wearValue: null,
+        },
       ],
       /**
        * Dữ liệu tài sản gọi lên từ api để bind dữ liệu vào bảng trong form
        */
       dataAsset: [
         {
-          assetId: "1",
-          assetCode: "LS0001",
-          assetName: "laptop1",
-          originalPrice: 10000000,
-          wearAccumulated: 1000000,
-          wearValue: 9000000
+          fixed_asset_id: "11eea441-2a19-1735-6b78-553c0310877a",
+          fixed_asset_code: "TS0022",
+          fixed_asset_name: "Máy móc, thiết bị dùng trong ngành dệt",
+          cost: 719325549.207,
+          depreciation_rate: 52,
+          depreciation_year_price: 627237005.6214,
+          tracked_year: 2019,
+          life_time: -1095589246,
+          production_year: 2006,
         },
-        {
-          assetId: "2",
-          assetCode: "LS0002",
-          assetName: "laptop 2",
-          originalPrice: 10000000,
-          wearAccumulated: 1000000,
-          wearValue: 9000000
-        },
-        {
-          assetId: "3",
-          assetCode: "LS0003",
-          assetName: "laptop 3",
-          originalPrice: 10000000,
-          wearAccumulated: 1000000,
-          wearValue: 9000000
-        },
-        {
-          assetId: "4",
-          assetCode: "LS0004",
-          assetName: "laptop 4",
-          originalPrice: 10000000,
-          wearAccumulated: 1000000,
-          wearValue: 9000000
-        }
       ],
       textCode: "",
       iData: 0,
       isPopup: false,
-      itemDelete: {}
+      itemDelete: {},
     };
   },
   /**
@@ -554,7 +534,7 @@ export default {
     showOffForm() {
       this.$store.dispatch("offForm");
       this.$emit("resetItem");
-    }
+    },
     // /**
     //  * Click vào nút lưu thực hiện thêm data khi id null và sửa data khi id khác null
     //  */
@@ -675,15 +655,16 @@ export default {
      */
     options() {
       let assetC = [];
-      this.dataAsset.forEach(element => {
-        // assetC.push(element.assetCode);
-        let optionCode = {};
-        optionCode.assetCode = element.assetCode;
-        optionCode.disabled = true;
-        assetC.push(optionCode);
+      this.dataAsset.forEach((element) => {
+        assetC.push(element.fixed_asset_code);
+        // let optionCode = {};
+        // optionCode.assetCode = element.assetCode;
+        // optionCode.disabled = true;
+        // assetC.push(optionCode);
       });
       return assetC;
-    }
+    },
+    
     // bindDataForm() {
     //   if (this.textCode != "") {
     //     this.dataAsset.forEach(element => {
@@ -763,46 +744,58 @@ export default {
     //   }
   },
   watch: {
-    textCode: function() {
+    textCode: function () {
       if (this.textCode != null) {
-        this.dataAsset.forEach(element => {
-          if (element.assetCode == this.textCode.assetCode) {
-            this.dataAssetForm[this.iData].assetId = element.assetId;
-            this.dataAssetForm[this.iData].assetCode = element.assetCode;
-            this.dataAssetForm[this.iData].assetName = element.assetName;
-            this.dataAssetForm[this.iData].originalPrice =
-              element.originalPrice;
-            this.dataAssetForm[this.iData].wearAccumulated =
-              element.wearAccumulated;
-            this.dataAssetForm[this.iData].wearValue = element.wearValue;
+        this.dataAsset.forEach((element) => {
+          if (element.fixed_asset_code == this.textCode) {
+            this.dataAssetForm[this.iData].fixed_asset_id =
+              element.fixed_asset_id;
+            this.dataAssetForm[this.iData].fixed_asset_code =
+              element.fixed_asset_code;
+            this.dataAssetForm[this.iData].fixed_asset_name =
+              element.fixed_asset_name;
+            this.dataAssetForm[this.iData].cost = element.cost;
+            this.dataAssetForm[this.iData].depreciation_rate =
+              element.depreciation_rate;
+            this.dataAssetForm[this.iData].depreciation_year_price =
+              element.depreciation_year_price;
+            this.dataAssetForm[this.iData].tracked_year = element.tracked_year;
+            this.dataAssetForm[this.iData].life_time = element.life_time;
+            this.dataAssetForm[this.iData].production_year =
+              element.production_year;
           }
         });
         // this.options.forEach(element => {
         //   if(this.textCode == element.assetCode)
         // });
       } else {
-        this.dataAssetForm[this.iData].assetId = null;
-        this.dataAssetForm[this.iData].assetCode = null;
-        this.dataAssetForm[this.iData].assetName = null;
-        this.dataAssetForm[this.iData].originalPrice = null;
-        this.dataAssetForm[this.iData].wearAccumulated = null;
-        this.dataAssetForm[this.iData].wearValue = null;
+        this.dataAssetForm[this.iData].fixed_asset_id = null;
+        this.dataAssetForm[this.iData].fixed_asset_code =null;
+        this.dataAssetForm[this.iData].fixed_asset_name =null;
+        this.dataAssetForm[this.iData].cost = null;
+        this.dataAssetForm[this.iData].depreciation_rate =null;
+        this.dataAssetForm[this.iData].depreciation_year_price =null;
+        this.dataAssetForm[this.iData].tracked_year = null;
+        this.dataAssetForm[this.iData].life_time = null;
+        this.dataAssetForm[this.iData].production_year =null;
       }
       this.textCode = "";
-    }
-  }
-  // // async created() {
-  // //   /**
-  // //    * Gọi API lấy 1 tài sản theo id
-  // //    */
-  // //   if (this.itemTemp.assetId != null) {
-  // //     let urlApi =
-  // //       "http://localhost:51888/api/v1/Assets/" + this.itemTemp.assetId;
-  // //     const item = await axios.get(urlApi);
-  // //     this.dataItem = item.data;
-  // //   }
-  // //   window.addEventListener("keyup", this.addKeyForm);
-  // // }
+    },
+  },
+  async created() {
+    /**
+     * Gọi API lấy 1 tài sản theo id
+     */
+    // if (this.itemTemp.assetId != null) {
+    //   let urlApi =
+    //     "http://localhost:51888/api/v1/Assets/" + this.itemTemp.assetId;
+    //   const item = await axios.get(urlApi);
+    //   this.dataItem = item.data;
+    // }
+    const assets = await axios.get("https://localhost:44392/api/v1/Assets");
+    this.dataAsset = assets.data;
+    // window.addEventListener("keyup", this.addKeyForm);
+  },
 };
 </script>
 
@@ -920,7 +913,7 @@ Bảng danh sách tài sản
   height: 35px;
 }
 .table-asset {
-  height: 210px;
+  height: 212px;
   overflow: auto;
 }
 .table-asset .table {

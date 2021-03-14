@@ -8,7 +8,7 @@ namespace MISA.QLTS.BACKEND.COMMON.Entity
     /// Thông tin tài sản
     /// </summary>
     /// CreatedBy: NMDAT (12/03/2021)
-    public class Asset
+    public class FixedAsset
     {
         #region Contructor
         /// <summary>

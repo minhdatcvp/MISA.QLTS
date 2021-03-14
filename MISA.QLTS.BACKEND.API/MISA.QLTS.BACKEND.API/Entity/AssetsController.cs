@@ -14,7 +14,7 @@ namespace MISA.QLTS.BACKEND.API.Entity
     /// Controller Asset được kế thừa từ basecontroller để quản lý các phương thức gọi API Asset
     /// </summary>
     /// CreatedBy: NMDAT(20/02/2021)
-    public class AssetsController : BasesController<Asset>
+    public class AssetsController : BasesController<FixedAsset>
     {
         public AssetsController(IAssetService _assetService) : base(_assetService)
         {
