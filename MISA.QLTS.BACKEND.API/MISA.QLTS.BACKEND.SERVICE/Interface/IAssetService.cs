@@ -5,6 +5,9 @@ using System.Text;
 
 namespace MISA.QLTS.BACKEND.SERVICE.Interface
 {
+    /// <summary>
+    /// interface tham chiếu tới Service con
+    /// </summary>
     public interface IAssetService : IBaseService<FixedAsset>
     {
     }

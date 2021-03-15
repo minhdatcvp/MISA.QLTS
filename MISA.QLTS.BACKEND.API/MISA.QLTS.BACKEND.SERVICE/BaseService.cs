@@ -79,7 +79,7 @@ namespace MISA.QLTS.BACKEND.SERVICE
         /// <summary>
         /// Xử lý nghiệp vụ thêm mới tài sản
         /// </summary>
-        /// <param name="customer">đối tượng thêm mới</param>
+        /// <param name="">đối tượng thêm mới</param>
         /// <returns>ServiceResult</returns>
         public virtual ServiceResult Insert(T entity)
         {
@@ -134,7 +134,7 @@ namespace MISA.QLTS.BACKEND.SERVICE
         /// <summary>
         /// Xử lý nghiệp vụ Sửa thông tin tài sản
         /// </summary>
-        /// <param name="customer">đối tượng Sửa</param>
+        /// <param name="">đối tượng Sửa</param>
         /// <returns>ServiceResult</returns>
         public virtual ServiceResult Update(T entity)
         {
@@ -188,13 +188,13 @@ namespace MISA.QLTS.BACKEND.SERVICE
         /// </summary>
         /// <param name="entity">thực thể cần xóa</param>
         /// <returns></returns>
-        public virtual ServiceResult Delete(Guid id)
+        public virtual ServiceResult Delete(T entity)
         {
             // Khởi tạo reponsive database
             var serviceResult = new ServiceResult();
 
             // Gọi đến method queyry của dbContex để thực hiện truy vấn vào database
-            serviceResult.Data = _baseData.Delete(id);
+            serviceResult.Data = _baseData.Delete(entity);
             if (serviceResult.Data != null)
             {
                 serviceResult.MisaCode = MISACode.Success;

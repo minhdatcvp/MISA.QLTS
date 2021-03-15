@@ -5,6 +5,10 @@ using System.Text;
 
 namespace MISA.QLTS.BACKEND.SERVICE.Interface
 {
+    /// <summary>
+    /// interface tham chiếu tới service cha
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IBaseService<T>
     {
         /// <summary>
@@ -12,11 +16,6 @@ namespace MISA.QLTS.BACKEND.SERVICE.Interface
         /// </summary>
         /// <returns></returns>
         ServiceResult Get();
-        /// <summary>
-        /// Get dữ liệu theo Id
-        /// </summary>
-        /// <returns></returns>
-        ServiceResult GetById(Guid id);
         /// <summary>
         /// Phương thức thêm
         /// </summary>
@@ -34,6 +33,12 @@ namespace MISA.QLTS.BACKEND.SERVICE.Interface
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        ServiceResult Delete(Guid id);
+        ServiceResult Delete(T entity);
+        /// <summary>
+        /// Lấy theo Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        ServiceResult GetById(Guid id);
     }
 }

@@ -135,4 +135,19 @@
   <data name="Msg_Dev" xml:space="preserve">
     <value>Có lỗi xảy ra vui lòng kiểm tra lại truy vấn</value>
   </data>
+  <data name="Proc_Delete" xml:space="preserve">
+    <value>Proc_Delete{0}</value>
+  </data>
+  <data name="Proc_GetById" xml:space="preserve">
+    <value>Proc_Select{0}ById</value>
+  </data>
+  <data name="Proc_Insert" xml:space="preserve">
+    <value>Proc_Insert{0}</value>
+  </data>
+  <data name="Proc_SelectAll" xml:space="preserve">
+    <value>Proc_Select{0}Datas</value>
+  </data>
+  <data name="Proc_Update" xml:space="preserve">
+    <value>Proc_Update{0}</value>
+  </data>
 </root>

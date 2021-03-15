@@ -10,15 +10,14 @@ using System.Threading.Tasks;
 
 namespace MISA.QLTS.BACKEND.API.Entity
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class RefDecrementsController : BasesController<RefDecrement>
     {
         IRefDecrementService _refDecrementService;
-        public RefDecrementsController(IBaseService<RefDecrement> baseService, IRefDecrementService refDecrementService) : base(baseService)
+        public RefDecrementsController(IRefDecrementService refDecrementService) : base(refDecrementService)
         {
             _refDecrementService = refDecrementService;
         }
+
         /// <summary>
         /// Xóa nhiều đối tượng
         /// </summary>
@@ -44,5 +43,6 @@ namespace MISA.QLTS.BACKEND.API.Entity
                 return StatusCode(200, res.Data);
             }
         }
+
     }
 }

@@ -113,5 +113,50 @@ namespace MISA.QLTS.BACKEND.COMMON.Properties {
                 return ResourceManager.GetString("Msg_Dev", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proc_Delete{0}.
+        /// </summary>
+        public static string Proc_Delete {
+            get {
+                return ResourceManager.GetString("Proc_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proc_Select{0}ById.
+        /// </summary>
+        public static string Proc_GetById {
+            get {
+                return ResourceManager.GetString("Proc_GetById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proc_Insert{0}.
+        /// </summary>
+        public static string Proc_Insert {
+            get {
+                return ResourceManager.GetString("Proc_Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proc_Select{0}Datas.
+        /// </summary>
+        public static string Proc_SelectAll {
+            get {
+                return ResourceManager.GetString("Proc_SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proc_Update{0}.
+        /// </summary>
+        public static string Proc_Update {
+            get {
+                return ResourceManager.GetString("Proc_Update", resourceCulture);
+            }
+        }
     }
 }

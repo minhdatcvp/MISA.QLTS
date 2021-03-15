@@ -20,6 +20,7 @@ namespace MISA.QLTS.BACKEND.DATALAYER.Entity
         #endregion
 
         #region Method
+        
         /// <summary>
         /// Xóa nhiều bản ghi cùng lúc
         /// </summary>

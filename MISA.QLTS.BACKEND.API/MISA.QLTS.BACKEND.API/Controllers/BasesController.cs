@@ -35,49 +35,19 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         {
             var res = _baseService.Get();
             var result = res.Data as List<T>;
-            // Nếu có kết quả trả về result.Count > 0 thì trả về 200 nếu không trả về 204
-            //if (result.Count == 0)
-            //        return StatusCode(204, res.Data);
-            //    else
-            //        return StatusCode(200, res.Data);
             return new JsonResult(res);
         }
-        /// <summary>
-        /// Lấy dữ liệu theo id
-        /// </summary>
-        /// <param name="id">id thực thể</param>
-        /// <returns>Dữ liệu cần lấy theo id</returns>
-        [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute]Guid id)
-        {
-            var res = _baseService.GetById(id);
-            var result = res.Data as List<T>;
-            return new JsonResult(res);
-
-        }
+        
         // POST api/<CustomersController>
         /// <summary>
         /// Thêm đối tượng
         /// </summary>
         /// <param name="entity">Thực thể</param>
-        /// <returns>Responsive tương ứng cho Client (201- thành công, ...)</returns>
         [HttpPost]
         public IActionResult Post([FromBody] T entity)
         {
             // Gọi đến hàm Insert thực hiện validate -> thêm
             var res = _baseService.Insert(entity);
-            //if (res.Success == false)
-            //{
-            //    return StatusCode(400, res.Data);
-            //}
-            //else if (res.Success == true && (int)res.Data > 0)
-            //{
-            //    return StatusCode(201, res.Data);
-            //}
-            //else
-            //{
-            //    return StatusCode(200, res.Data);
-            //}
             return new JsonResult(res);
         }
         // POST api/<CustomersController>
@@ -85,13 +55,11 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         /// Sửa đối tượng
         /// </summary>
         /// <param name="entity">Thực thể</param>
-        /// <returns>Responsive tương ứng cho Client (201- thành công, ...)</returns>
         [HttpPut]
         public IActionResult Put(T entity)
         {
             // Gọi đến hàm Insert thực hiện validate -> Sửa
             var res = _baseService.Update(entity);
-
             return new JsonResult(res);
         }
         /// <summary>
@@ -100,24 +68,25 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        [HttpDelete]
+        public IActionResult Delete(T entity)
         {
             // Gọi đến hàm Insert thực hiện validate -> Xóa
-            var res = _baseService.Delete(id);
-            //if (res.Success == false)
-            //{
-            //    return StatusCode(400, res.Data);
-            //}
-            //else if (res.Success == true && (int)res.Data > 0)
-            //{
-            //    return StatusCode(201, res.Data);
-            //}
-            //else
-            //{
-            //    return StatusCode(200, res.Data);
-            //}
+            var res = _baseService.Delete(entity);
             return new JsonResult(res);
+        }
+        /// <summary>
+        /// Lấy dữ liệu theo id
+        /// </summary>
+        /// <param name="id">id thực thể</param>
+        /// <returns>Dữ liệu cần lấy theo id</returns>
+        [HttpGet("{id}")]
+        public IActionResult GetById([FromRoute] Guid id)
+        {
+            var res = _baseService.GetById(id);
+            var result = res.Data as List<T>;
+            return new JsonResult(result);
+
         }
     }
 }

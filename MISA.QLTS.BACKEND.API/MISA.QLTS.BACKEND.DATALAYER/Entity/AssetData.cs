@@ -8,6 +8,10 @@ using System.Text;
 
 namespace MISA.QLTS.BACKEND.DATALAYER.Entity
 {
+    /// <summary>
+    /// Tầng Data tài sản
+    /// </summary>
+    /// CreatedBy: NMDAT(14/03/2021)
     public class AssetData : BaseData<FixedAsset>,IAssetData
     {
         // Khởi tạo tham chiếu interface
@@ -30,13 +34,8 @@ namespace MISA.QLTS.BACKEND.DATALAYER.Entity
         {
             // sql truy vấn mã tài sản
             var sql = $"SELECT * FROM fixed_asset WHERE fixed_asset_code = '{fixed_asset_code}'";
-
             // dapper thực hiện truy vấn nếu null là không tồn tại - != null là tồn tại
             var fixedAssetCodeExits = _dataConnection.Query(sql).FirstOrDefault();
-            //if (customerCodeExits != null)
-            //    return true;
-            //else
-            //    return false;
             return fixedAssetCodeExits;
         }
         #endregion

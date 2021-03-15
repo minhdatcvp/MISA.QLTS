@@ -8,9 +8,13 @@ using System.Text;
 
 namespace MISA.QLTS.BACKEND.SERVICE.Entity
 {
+    /// <summary>
+    /// Service Xử lý nghiệp vụ Chứng từ
+    /// </summary>
+    /// CreatedBy: NMDAT(14/03/2021)
     public class RefDecrementService : BaseService<RefDecrement>, IRefDecrementService
     {
-        //Khởi tạo tham chiếu tới DbConnectionAsset
+        //Khởi tạo tham chiếu tới DbConnectionRefDecrement
         private readonly IRefDecrementData _dbConnectionRefDecrement;
         #region Contructor
         public RefDecrementService(IBaseData<RefDecrement> baseData, IRefDecrementData dbConnectionRefDecrement) : base(baseData)
@@ -52,7 +56,7 @@ namespace MISA.QLTS.BACKEND.SERVICE.Entity
         /// <summary>
         /// Override Validate insert từ BaseService
         /// </summary>
-        /// <param name="entity">customer</param>
+        /// <param name="entity">refDecrement</param>
         /// <param name="errorMsg">messenger trả về</param>
         /// <returns>true : dữ liệu hợp lệ - false : dữ liệu không hợp lệ</returns>
         protected override bool Validate(RefDecrement entity, ErrorMsg errorMsg)
@@ -73,7 +77,7 @@ namespace MISA.QLTS.BACKEND.SERVICE.Entity
                 isValid = false;
             }
 
-            //2. Validate dữ liệu không được phép (trùng): mã khách hàng,  số điện thoại
+            //2. Validate dữ liệu không được phép (trùng):
             // kiểm tra trong database đã tồn tại đã mã kh hay chưa
             var isExits = _dbConnectionRefDecrement.CheckRefDecrementCodeExits(entity.ref_no);
             if (isExits!= null)
@@ -87,7 +91,7 @@ namespace MISA.QLTS.BACKEND.SERVICE.Entity
         /// <summary>
         /// Override Validate update từ BaseService
         /// </summary>
-        /// <param name="entity">customer</param>
+        /// <param name="entity">Refdecrement</param>
         /// <param name="errorMsg">messenger trả về</param>
         /// <returns>true : dữ liệu hợp lệ - false : dữ liệu không hợp lệ</returns>
         protected override bool ValidateUpdate(RefDecrement entity, ErrorMsg errorMsg)
@@ -108,13 +112,17 @@ namespace MISA.QLTS.BACKEND.SERVICE.Entity
                 errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.ErrorService_EmptyPostedDate);
                 isValid = false;
             }
-            //2. Validate dữ liệu không được phép (trùng): mã khách hàng,  số điện thoại
+            //2. Validate dữ liệu không được phép (trùng):
             // kiểm tra trong database đã tồn tại đã mã kh hay chưa
             var isExits = _dbConnectionRefDecrement.CheckRefDecrementCodeExits(entity.ref_no);
-            if (isExits.ref_no == entity.ref_no && isExits.ref_decrement_id == entity.ref_decrement_id)
+            if (isExits != null)
             {
-                errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.ErrorService_DuplicateRefDecrementCode);
-                isValid = false;
+                if (isExits.ref_no == entity.ref_no && isExits.ref_decrement_id != entity.ref_decrement_id)
+                {
+                    errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.ErrorService_DuplicateRefDecrementCode);
+                    isValid = false;
+                }
+
             }
             return isValid;
         }

@@ -7,7 +7,7 @@ namespace MISA.Common.Model
     /// <summary>
     /// MisaCode convention
     /// </summary>
-    /// CreatedBy: NMDAT(19/02/2021)
+    /// CreatedBy: NMDAT(14/03/2021)
     public enum MISACode
     {
         /// <summary>

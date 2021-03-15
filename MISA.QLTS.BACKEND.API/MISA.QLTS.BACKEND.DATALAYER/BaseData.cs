@@ -12,6 +12,7 @@ namespace MISA.QLTS.BACKEND.DATALAYER
     /// Có các phương thức thêm sửa xóa
     /// </summary>
     /// <typeparam name="T">(Entity : Asset or Decrement)</typeparam>
+    /// CreatedBy: NMDAT(14/03/2021) 
     public class BaseData<T> : IBaseData<T>
     {
         // Khởi tạo tham chiếu interface
@@ -29,33 +30,33 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         #endregion
 
         #region Method
-        //public string buildStore(int typeStore)
-        //{
-        //    var type = new TypeStore();
-        //    var sqlCommand = string.Empty;
-        //    var className = typeof(T).Name;
-        //    switch (typeStore)
-        //    {
-        //        case 1:
-        //            sqlCommand = "Proc_SelectFixedAssetDatas";
-        //            break;
-        //        case 2:
-        //            sqlCommand = "Proc_SelectFixedAssetDatas";
-        //            break;
-        //        case 3:
-        //            sqlCommand = "Proc_SelectFixedAssetDatas";
-        //            break;
-        //        case 4:
-        //            sqlCommand = "Proc_SelectFixedAssetDatas";
-        //            break;
-        //        case 5:
-        //            sqlCommand = "Proc_SelectFixedAssetDatas";
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //    return sqlCommand;
-        //}
+        public string buildStore(int typeStore)
+        {
+            
+            var sqlCommand = string.Empty;
+            var entityName = typeof(T).Name;
+            switch (typeStore)
+            {
+                case 1: // getall
+                    sqlCommand = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Proc_SelectAll;
+                    break;
+                case 2: // insert
+                    sqlCommand = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Proc_Insert ;
+                    break;
+                case 3: // update
+                    sqlCommand = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Proc_Update;
+                    break;
+                case 4: // delete
+                    sqlCommand = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Proc_Delete;
+                    break;
+                case 5: // get by id
+                    sqlCommand = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Proc_GetById;
+                    break;
+                default:
+                    break;
+            }
+            return string.Format(sqlCommand, entityName);
+        }
 
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         /// <returns>Trả về thông tin cần lấy</returns>
         public IEnumerable<T> GetAll(string sqlCommand = null, object parameters = null, CommandType commandType = CommandType.Text)
         {
-            var procName = "Proc_Select" + typeof(T).Name + "Datas";
+            var procName = buildStore(1);
             var listEntity = _dataConnection.Query(procName, commandType: CommandType.StoredProcedure);
             return listEntity;
         }
@@ -80,10 +81,10 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         /// <returns>Danh sách thực thể</returns>
         public T GetById(Guid id)
         {
-            //var procName = "Proc_Select" + typeof(T).Name + "ById";
-            var procName = $"select * form fixed_asset where fixed_asset_id = '{id}'";
-            var parameters = new DynamicParameters(id);
-            var result = _dataConnection.QueryFirst(procName);
+            var procName = buildStore(5);
+            
+            var parameters = new DynamicParameters(new { FixedAssetId = id });
+            var result = _dataConnection.QueryFirst(procName, parameters, commandType: CommandType.StoredProcedure);
             return result;
         }
         /// <summary>
@@ -94,7 +95,7 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         /// <returns>Số bản ghi thay đổi</returns>
         public int Insert(T entity)
         {
-            var procName = "Proc_Insert" + typeof(T).Name;
+            var procName = buildStore(2);
             var parameters = new DynamicParameters(entity);
             var result = _dataConnection.Excute(procName, parameters, CommandType.StoredProcedure);
             return result;
@@ -107,7 +108,7 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         /// <returns>Số bản ghi thay đổi</returns>
         public int Update(T entity)
         {
-            var procName = "Proc_Update" + typeof(T).Name;
+            var procName = buildStore(3);
             var parameters = new DynamicParameters(entity);
             var result = _dataConnection.Excute(procName, parameters, CommandType.StoredProcedure);
             return result;
@@ -119,10 +120,10 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         /// </summary>
         /// <param name="entity">Thực thể cần xóa</param>
         /// <returns>Số bản ghi thay đổi</returns>
-        public int Delete(Guid id)
+        public int Delete(T entity)
         {
-            var procName = "Proc_Delete" + typeof(T).Name;
-            var parameters = new DynamicParameters(id);
+            var procName = buildStore(4);
+            var parameters = new DynamicParameters(entity);
             var result = _dataConnection.Excute(procName, parameters, CommandType.StoredProcedure);
             return result;
         }

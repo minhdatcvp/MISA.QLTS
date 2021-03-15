@@ -14,11 +14,34 @@ namespace MISA.QLTS.BACKEND.COMMON.Entity
         /// <summary>
         /// ID chứng từ
         /// </summary>
-        public Guid ref_decrement_id { get; set; }
+        private string IdDecrementString { get; set; }
+        public Guid ref_decrement_id
+        {
+            get
+            {
+                return new Guid(IdDecrementString);
+            }
+            set
+            {
+                IdDecrementString = value.ToString();
+            }
+        }
+        private string IdOrganizationString { get; set; }
+
         /// <summary>
         /// ID của đơn vị
         /// </summary>
-        public String organization_id { get; set; }
+        public Guid organization_id
+        {
+            get
+            {
+                return new Guid(IdOrganizationString);
+            }
+            set
+            {
+                IdOrganizationString = value.ToString();
+            }
+        }
         /// <summary>
         /// Số chứng từ
         /// </summary>

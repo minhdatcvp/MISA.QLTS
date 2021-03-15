@@ -8,7 +8,7 @@ namespace MISA.Common.Model
     /// <summary>
     /// Lưu trữ thông tin lỗi
     /// </summary>
-    /// CreatedBy :NMDAT (19/02/2021)
+    /// CreatedBy :NMDAT (14/03/2021)
     public class ErrorMsg
     {
         /// <summary>
