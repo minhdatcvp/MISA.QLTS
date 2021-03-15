@@ -136,59 +136,41 @@ namespace MISA.QLTS.BACKEND.SERVICE
         /// </summary>
         /// <param name="customer">đối tượng Sửa</param>
         /// <returns>ServiceResult</returns>
-        public virtual ServiceResult Update(T entity, Guid id)
+        public virtual ServiceResult Update(T entity)
         {
-
             // Khởi tạo đối tượng trả về
             var serviceResult = new ServiceResult();
             // Khởi tạo thông báo lỗi 
             var errorMsg = new ErrorMsg();
-
             // Thuực hiện validate dữ liệu
             var isValid = ValidateUpdate(entity, errorMsg);
-
-            //Validate dữ liệu oke thì thực hiện hàm thêm
-            // Kiểm tra id có tồn tại hay chưa
-            var assetDelete = _baseData.GetById(id);
-            if (assetDelete != null)
+            // Validate dữ liệu oke thì thực hiện hàm thêm
+            if (isValid)
             {
-                if (isValid)
+                var res = _baseData.Update(entity);
+                if (res > 0)
                 {
-                    var res = _baseData.Update(entity);
-                    if (res > 0)
-                    {
-                        serviceResult.Success = true;
-                        serviceResult.Data = res;
-                        serviceResult.MisaCode = MISACode.Success;
-                        return serviceResult;
-                    }
-                    else
-                    {
-                        serviceResult.Success = true;
-                        serviceResult.Data = res;
-                        serviceResult.MisaCode = MISACode.IsValid;
-                        return serviceResult;
-                    }
+                    serviceResult.Success = true;
+                    serviceResult.Data = res;
+                    serviceResult.MisaCode = MISACode.Success;
+                    return serviceResult;
                 }
                 else
                 {
-                    serviceResult.Success = false;
-                    serviceResult.Data = errorMsg;
-                    serviceResult.MisaCode = MISACode.NotValid;
+                    serviceResult.Success = true;
+                    serviceResult.Data = res;
+                    serviceResult.MisaCode = MISACode.IsValid;
+                    return serviceResult;
                 }
             }
             else
             {
-                errorMsg.DevMsg = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Msg_Dev;
-                errorMsg.MoreInfo = MISA.QLTS.BACKEND.COMMON.Properties.Resources.MoreInfo;
-                errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.Error_UserMsg);
+                serviceResult.Success = false;
                 serviceResult.Data = errorMsg;
                 serviceResult.MisaCode = MISACode.NotValid;
-                serviceResult.Success = false;
             }
             return serviceResult;
-
-        }
+    }
 
         /// <summary>
         /// Thực hiện validate dữ liệu update

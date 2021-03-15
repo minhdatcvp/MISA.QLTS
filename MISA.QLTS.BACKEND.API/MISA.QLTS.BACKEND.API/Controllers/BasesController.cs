@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace MISA.QLTS.BACKEND.API.Controllers
 {
+    /// <summary>
+    /// Base Controller viết các đầu API chung
+    /// </summary>
+    /// <typeparam name="T">Entity</typeparam>
     [Route("api/v1/[controller]")]
     [ApiController]
     public class BasesController<T> : ControllerBase
@@ -16,6 +20,7 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         /// <summary>
         /// Khai báo interface tham chiếu đến BaseService
         /// </summary>
+        /// CreatedBy: NMDAT(14/03/2021)
         IBaseService<T> _baseService;
         public BasesController(IBaseService<T> baseService)
         {
@@ -31,10 +36,11 @@ namespace MISA.QLTS.BACKEND.API.Controllers
             var res = _baseService.Get();
             var result = res.Data as List<T>;
             // Nếu có kết quả trả về result.Count > 0 thì trả về 200 nếu không trả về 204
-            if (result.Count == 0)
-                return StatusCode(204, res.Data);
-            else
-                return StatusCode(200, res.Data);
+            //if (result.Count == 0)
+            //        return StatusCode(204, res.Data);
+            //    else
+            //        return StatusCode(200, res.Data);
+            return new JsonResult(res);
         }
         /// <summary>
         /// Lấy dữ liệu theo id
@@ -42,12 +48,11 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         /// <param name="id">id thực thể</param>
         /// <returns>Dữ liệu cần lấy theo id</returns>
         [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
+        public IActionResult GetById([FromRoute]Guid id)
         {
             var res = _baseService.GetById(id);
             var result = res.Data as List<T>;
-            // Nếu có kết quả trả về result.Count > 0 thì trả về 200 
-            return StatusCode(200, res.Data);
+            return new JsonResult(res);
 
         }
         // POST api/<CustomersController>
@@ -61,19 +66,19 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         {
             // Gọi đến hàm Insert thực hiện validate -> thêm
             var res = _baseService.Insert(entity);
-
-            if (res.Success == false)
-            {
-                return StatusCode(400, res.Data);
-            }
-            else if (res.Success == true && (int)res.Data > 0)
-            {
-                return StatusCode(201, res.Data);
-            }
-            else
-            {
-                return StatusCode(200, res.Data);
-            }
+            //if (res.Success == false)
+            //{
+            //    return StatusCode(400, res.Data);
+            //}
+            //else if (res.Success == true && (int)res.Data > 0)
+            //{
+            //    return StatusCode(201, res.Data);
+            //}
+            //else
+            //{
+            //    return StatusCode(200, res.Data);
+            //}
+            return new JsonResult(res);
         }
         // POST api/<CustomersController>
         /// <summary>
@@ -81,24 +86,13 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         /// </summary>
         /// <param name="entity">Thực thể</param>
         /// <returns>Responsive tương ứng cho Client (201- thành công, ...)</returns>
-        [HttpPut("{id}")]
-        public IActionResult Put(T entity, Guid id)
+        [HttpPut]
+        public IActionResult Put(T entity)
         {
             // Gọi đến hàm Insert thực hiện validate -> Sửa
-            var res = _baseService.Update(entity, id);
+            var res = _baseService.Update(entity);
 
-            if (res.Success == false)
-            {
-                return StatusCode(400, res.Data);
-            }
-            else if (res.Success == true && (int)res.Data > 0)
-            {
-                return StatusCode(201, res.Data);
-            }
-            else
-            {
-                return StatusCode(200, res.Data);
-            }
+            return new JsonResult(res);
         }
         /// <summary>
         /// Xóa đối tượng
@@ -111,19 +105,19 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         {
             // Gọi đến hàm Insert thực hiện validate -> Xóa
             var res = _baseService.Delete(id);
-
-            if (res.Success == false)
-            {
-                return StatusCode(400, res.Data);
-            }
-            else if (res.Success == true && (int)res.Data > 0)
-            {
-                return StatusCode(201, res.Data);
-            }
-            else
-            {
-                return StatusCode(200, res.Data);
-            }
+            //if (res.Success == false)
+            //{
+            //    return StatusCode(400, res.Data);
+            //}
+            //else if (res.Success == true && (int)res.Data > 0)
+            //{
+            //    return StatusCode(201, res.Data);
+            //}
+            //else
+            //{
+            //    return StatusCode(200, res.Data);
+            //}
+            return new JsonResult(res);
         }
     }
 }

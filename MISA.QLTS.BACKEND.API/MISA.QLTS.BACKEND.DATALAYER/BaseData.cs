@@ -80,9 +80,10 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         /// <returns>Danh sách thực thể</returns>
         public T GetById(Guid id)
         {
-            var procName = "Proc_Select" + typeof(T).Name + "ById";
+            //var procName = "Proc_Select" + typeof(T).Name + "ById";
+            var procName = $"select * form fixed_asset where fixed_asset_id = '{id}'";
             var parameters = new DynamicParameters(id);
-            var result = _dataConnection.QueryFirst(procName, parameters, CommandType.StoredProcedure);
+            var result = _dataConnection.QueryFirst(procName);
             return result;
         }
         /// <summary>

@@ -7,5 +7,6 @@ namespace MISA.QLTS.BACKEND.DATALAYER.Interface
 {
     public interface IAssetData : IBaseData<FixedAsset>
     {
+        FixedAsset CheckRefDecrementCodeExits(string fixed_asset_code);
     }
 }

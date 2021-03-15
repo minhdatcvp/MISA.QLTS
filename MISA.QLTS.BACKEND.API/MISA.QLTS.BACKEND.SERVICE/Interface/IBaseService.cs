@@ -28,7 +28,7 @@ namespace MISA.QLTS.BACKEND.SERVICE.Interface
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        ServiceResult Update(T entity, Guid id);
+        ServiceResult Update(T entity);
         /// <summary>
         /// Phương thức xóa
         /// </summary>
