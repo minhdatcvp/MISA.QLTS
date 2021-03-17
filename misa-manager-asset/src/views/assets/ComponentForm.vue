@@ -15,7 +15,7 @@
           <label>Ngày ghi giảm</label>
           <!-- <input class="input-search" type="date" /> -->
           <date-picker
-            v-model="date"
+            v-model="dataItem.refDate"
             value-type="YYYY-MM-DD"
             format="DD-MM-YYYY"
             class="datepicker"
@@ -24,13 +24,14 @@
         </div>
         <div class="decrement_number">
           <label>Số chứng từ</label>
-          <input class="input-search" type="text" />
+          <input class="input-search" type="text" v-model="dataItem.refNo" />
         </div>
       </div>
       <div class="journal_memo">
         <label>Lý do ghi giảm</label>
         <div class="memo">
           <textarea
+            v-model="dataItem.journalMemo"
             name="journal_memo"
             id="journal_memo"
             class="memo"
@@ -228,10 +229,11 @@ export default {
           production_year: 2006,
         },
       ],
-      textCode: "",
+      textCode: null,
       iData: 0,
       isPopup: false,
       itemDelete: {},
+      dataItem: {},
     };
   },
   /**
@@ -664,24 +666,6 @@ export default {
       });
       return assetC;
     },
-    
-    // bindDataForm() {
-    //   if (this.textCode != "") {
-    //     this.dataAsset.forEach(element => {
-    //       if (element.assetCode == this.textCode) {
-    //         this.dataAssetForm[this.iData].assetId = element.assetId;
-    //         this.dataAssetForm[this.iData].assetCode = element.assetCode;
-    //         this.dataAssetForm[this.iData].assetName = element.assetName;
-    //         this.dataAssetForm[this.iData].originalPrice =
-    //           element.originalPrice;
-    //         this.dataAssetForm[this.iData].wearAccumulated =
-    //           element.wearAccumulated;
-    //         this.dataAssetForm[this.iData].wearValue = element.wearValue;
-    //       }
-    //     });
-    //   }
-    //   return this.dataAssetForm;
-    // }
     //   originalPrice() {
     //     let price = null;
     //     if (this.dataItem.originalPrice != null) {
@@ -770,30 +754,35 @@ export default {
         // });
       } else {
         this.dataAssetForm[this.iData].fixed_asset_id = null;
-        this.dataAssetForm[this.iData].fixed_asset_code =null;
-        this.dataAssetForm[this.iData].fixed_asset_name =null;
+        this.dataAssetForm[this.iData].fixed_asset_code = null;
+        this.dataAssetForm[this.iData].fixed_asset_name = null;
         this.dataAssetForm[this.iData].cost = null;
-        this.dataAssetForm[this.iData].depreciation_rate =null;
-        this.dataAssetForm[this.iData].depreciation_year_price =null;
+        this.dataAssetForm[this.iData].depreciation_rate = null;
+        this.dataAssetForm[this.iData].depreciation_year_price = null;
         this.dataAssetForm[this.iData].tracked_year = null;
         this.dataAssetForm[this.iData].life_time = null;
-        this.dataAssetForm[this.iData].production_year =null;
+        this.dataAssetForm[this.iData].production_year = null;
       }
-      this.textCode = "";
+      this.textCode = null;
     },
+    // dataItem: function () {
+    //   this.dataAssetForm = JSON.parse(this.dataItem.refDetail.toString());
+    // }
   },
   async created() {
     /**
      * Gọi API lấy 1 tài sản theo id
      */
-    // if (this.itemTemp.assetId != null) {
-    //   let urlApi =
-    //     "http://localhost:51888/api/v1/Assets/" + this.itemTemp.assetId;
-    //   const item = await axios.get(urlApi);
-    //   this.dataItem = item.data;
-    // }
+    if (this.idItem != null) {
+      let urlApi =
+        "https://localhost:44392/api/v1/RefDecrements/" + this.idItem;
+      axios.get(urlApi).then((reponsive) => {
+        this.dataItem = reponsive.data.data;
+        this.dataAssetForm = JSON.parse(this.dataItem.refDetail.toString());
+      });
+    }
     const assets = await axios.get("https://localhost:44392/api/v1/Assets");
-    this.dataAsset = assets.data;
+    this.dataAsset = assets.data.data;
     // window.addEventListener("keyup", this.addKeyForm);
   },
 };

@@ -1,7 +1,9 @@
-﻿using MISA.QLTS.BACKEND.COMMON.Entity;
+﻿using Dapper;
+using MISA.QLTS.BACKEND.COMMON.Entity;
 using MISA.QLTS.BACKEND.DATALAYER.Interface;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -50,10 +52,12 @@ namespace MISA.QLTS.BACKEND.DATALAYER.Entity
         public RefDecrement CheckRefDecrementCodeExits(string ref_no)
         {
             // sql truy vấn mã tài sản
-            var sql = $"SELECT * FROM ref_decrement rd WHERE rd.ref_no = '{ref_no}'";
-
+            //var sql = $"SELECT * FROM ref_decrement rd WHERE rd.ref_no = '{ref_no}'";
+            var procName = "Proc_SelectRefDecrementByCode";
+            var parameters = new DynamicParameters();
+            parameters.Add("$RefNo", ref_no);
             // dapper thực hiện truy vấn nếu null là không tồn tại - != null là tồn tại
-            var customerCodeExits = _dataConnection.Query(sql).FirstOrDefault();
+            var customerCodeExits = _dataConnection.Query(procName, parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
             //if (customerCodeExits != null)
             //    return true;
             //else

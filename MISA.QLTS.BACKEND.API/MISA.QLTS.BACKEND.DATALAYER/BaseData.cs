@@ -32,7 +32,7 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         #region Method
         public string buildStore(int typeStore)
         {
-            
+
             var sqlCommand = string.Empty;
             var entityName = typeof(T).Name;
             switch (typeStore)
@@ -41,7 +41,7 @@ namespace MISA.QLTS.BACKEND.DATALAYER
                     sqlCommand = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Proc_SelectAll;
                     break;
                 case 2: // insert
-                    sqlCommand = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Proc_Insert ;
+                    sqlCommand = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Proc_Insert;
                     break;
                 case 3: // update
                     sqlCommand = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Proc_Update;
@@ -82,8 +82,9 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         public T GetById(Guid id)
         {
             var procName = buildStore(5);
-            
-            var parameters = new DynamicParameters(new { FixedAssetId = id });
+
+            var parameters = new DynamicParameters();
+            parameters.Add("$RefDecrementId", id);
             var result = _dataConnection.QueryFirst(procName, parameters, commandType: CommandType.StoredProcedure);
             return result;
         }
@@ -120,10 +121,10 @@ namespace MISA.QLTS.BACKEND.DATALAYER
         /// </summary>
         /// <param name="entity">Thực thể cần xóa</param>
         /// <returns>Số bản ghi thay đổi</returns>
-        public int Delete(T entity)
+        public int Delete(Guid id)
         {
             var procName = buildStore(4);
-            var parameters = new DynamicParameters(entity);
+            var parameters = new DynamicParameters(new { ref_decrement_id = id });
             var result = _dataConnection.Excute(procName, parameters, CommandType.StoredProcedure);
             return result;
         }

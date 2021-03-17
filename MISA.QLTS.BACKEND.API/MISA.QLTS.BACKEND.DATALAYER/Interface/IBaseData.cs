@@ -44,6 +44,6 @@ namespace MISA.QLTS.BACKEND.DATALAYER.Interface
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        int Delete(T entity);
+        int Delete(Guid id);
     }
 }

@@ -188,13 +188,13 @@ namespace MISA.QLTS.BACKEND.SERVICE
         /// </summary>
         /// <param name="entity">thực thể cần xóa</param>
         /// <returns></returns>
-        public virtual ServiceResult Delete(T entity)
+        public virtual ServiceResult Delete(Guid id)
         {
             // Khởi tạo reponsive database
             var serviceResult = new ServiceResult();
 
             // Gọi đến method queyry của dbContex để thực hiện truy vấn vào database
-            serviceResult.Data = _baseData.Delete(entity);
+            serviceResult.Data = _baseData.Delete(id);
             if (serviceResult.Data != null)
             {
                 serviceResult.MisaCode = MISACode.Success;

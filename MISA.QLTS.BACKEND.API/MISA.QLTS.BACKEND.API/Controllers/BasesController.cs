@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MISA.Common.Model;
 using MISA.QLTS.BACKEND.SERVICE.Interface;
 using System;
 using System.Collections.Generic;
@@ -33,9 +34,18 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var res = _baseService.Get();
-            var result = res.Data as List<T>;
+            var res = new ServiceResult();
+            try
+            {
+                res = _baseService.Get();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                res.Success = false;
+            }
             return new JsonResult(res);
+            
         }
         
         // POST api/<CustomersController>
@@ -46,8 +56,16 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] T entity)
         {
-            // Gọi đến hàm Insert thực hiện validate -> thêm
-            var res = _baseService.Insert(entity);
+            //var res = new ServiceResult();
+            //try
+            //{
+               var res = _baseService.Insert(entity);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex);
+            //    res.Success = false;
+            //}
             return new JsonResult(res);
         }
         // POST api/<CustomersController>
@@ -58,8 +76,16 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         [HttpPut]
         public IActionResult Put(T entity)
         {
-            // Gọi đến hàm Insert thực hiện validate -> Sửa
-            var res = _baseService.Update(entity);
+            var res = new ServiceResult();
+            try
+            {
+                res = _baseService.Update(entity);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                res.Success = false;
+            }
             return new JsonResult(res);
         }
         /// <summary>
@@ -68,11 +94,19 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         // DELETE api/<ValuesController>/5
-        [HttpDelete]
-        public IActionResult Delete(T entity)
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromRoute] Guid id)
         {
-            // Gọi đến hàm Insert thực hiện validate -> Xóa
-            var res = _baseService.Delete(entity);
+            var res = new ServiceResult();
+            try
+            {
+                res = _baseService.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                res.Success = false;
+            }
             return new JsonResult(res);
         }
         /// <summary>
@@ -83,9 +117,17 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById([FromRoute] Guid id)
         {
-            var res = _baseService.GetById(id);
-            var result = res.Data as List<T>;
-            return new JsonResult(result);
+            var res = new ServiceResult();
+            try
+            {
+                res = _baseService.GetById(id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                res.Success = false;
+            }
+            return new JsonResult(res);
 
         }
     }

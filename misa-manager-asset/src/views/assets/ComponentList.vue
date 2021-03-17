@@ -56,12 +56,12 @@
             </td>
             <td class="order">{{ index + 1 }}</td>
             <td class="posted_date">
-              {{ format_date(item.posted_date) }}
+              {{ format_date(item.postedDate) }}
             </td>
-            <td>{{ item.ref_no }}</td>
-            <td>{{ item.journal_memo }}</td>
+            <td>{{ item.refNo }}</td>
+            <td>{{ item.journalMemo }}</td>
             <td class="cost_total">
-              {{ formatPrice(item.cost_total) }}
+              {{ formatPrice(item.costTotal) }}
             </td>
             <td class="fuctionCol">
               <div class="editIcon" title="Sửa" @click="getItem(item)"></div>
@@ -107,14 +107,15 @@
       @resetItem="resetItem" -->
     <!-- Mục thống kê tổng  -->
     <footer>
-      <p>Tổng số tài sản : {{ decrement.length }}</p>
-      <p class="sum-asset">Tổng nguyên giá: {{ formatPrice(sumPrice) }}</p>
+      <p>Tổng số chứng từ : {{ decrement.length }}</p>
+      <p class="sum-asset">Tổng giá trị còn lại: {{ formatPrice(sumPrice) }}</p>
     </footer>
     <notifications group="foo" />
   </div>
 </template>
 
 <script>
+import * as axios from "axios";
 import ComponentForm from "./ComponentForm.vue";
 import moment from "moment";
 export default {
@@ -126,57 +127,8 @@ export default {
       refreshIcon: require("../../assets/icon/refresh.svg"),
       deleteIcon: require("../../assets/icon/trash.svg"),
       // Dữ liệu lấy về từ api
-      decrement: [
-        {
-          ref_decrement_id: "1",
-          organization_id: "Thuộc đơn vị",
-          ref_no: "Số chứng từ",
-          ref_type: 0,
-          ref_date: "2021-03-06",
-          ref_detail: "Chi tiết danh sách tài sản của chứng từ",
-          journal_memo: "Diễn giải",
-          posted_date: "2021-03-06",
-          tracked_year: "2021-03-06",
-          cost_total: 2000000,
-          created_by: "Người tạo",
-          created_date: "Ngày tạo",
-          modified_by: "Người sửa",
-          modified_date: "Ngày sửa"
-        },
-        {
-          ref_decrement_id: "2",
-          organization_id: "Thuộc đơn vị",
-          ref_no: "Số chứng từ",
-          ref_type: 0,
-          ref_date: "2021-03-06",
-          ref_detail: "Chi tiết danh sách tài sản của chứng từ",
-          journal_memo: "Diễn giải",
-          posted_date: "2021-03-06",
-          tracked_year: "2021-03-06",
-          cost_total: 2000000,
-          created_by: "Người tạo",
-          created_date: "Ngày tạo",
-          modified_by: "Người sửa",
-          modified_date: "Ngày sửa"
-        },
-        {
-          ref_decrement_id: "3",
-          organization_id: "Thuộc đơn vị",
-          ref_no: "Số chứng từ",
-          ref_type: 0,
-          ref_date: "2021-03-06",
-          ref_detail: "Chi tiết danh sách tài sản của chứng từ",
-          journal_memo: "Diễn giải",
-          posted_date: "2021-03-06",
-          tracked_year: "2021-03-06",
-          cost_total: 2000000,
-          created_by: "Người tạo",
-          created_date: "Ngày tạo",
-          modified_by: "Người sửa",
-          modified_date: "Ngày sửa"
-        }
-      ],
-      idItem:"", // id truyền xuống form
+      decrement: [],
+      idItem:null, // id truyền xuống form
       isActive: 0, // lưu item đang được trỏ tới
       //   componentKey: 0, // Biến refresh table
       isCheckbox: false, // Hiển thị checkbox
@@ -236,7 +188,7 @@ export default {
      * Sửa lại giá trị ngày tháng rồi đẩy dữ liệu lên form edit
      */
     getItem(item) {
-      this.idItem = item.ref_decrement_id;
+      this.idItem = item.refDecrementId;
       this.showForm();
     },
     /**
@@ -259,7 +211,7 @@ export default {
      */
     formatPrice(value) {
       if (value != null) {
-        let val = (value / 1).toFixed(0).replace(".", ",");
+        let val = (value / 1).toFixed(3).replace(".", ",");
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       }
     },
@@ -353,7 +305,7 @@ export default {
     sumPrice() {
       var sum = 0;
       for (let i = 0; i < this.decrement.length; i++) {
-        sum += this.decrement[i].cost_total;
+        sum += this.decrement[i].costTotal;
       }
       return sum;
     }
@@ -388,33 +340,19 @@ export default {
     //     return filtered;
     //   });
     // },
-  }
+  },
   // call api lấy toàn bộ dữ liệu tài sản
-  // async created() {
-  //   /**
-  //    * Gọi API lấy toàn bộ tài sản
-  //    */
-  //   const assets = await axios.get("http://localhost:51888/api/v1/Assets");
-  //   this.assets = assets.data;
-  //   /**
-  //    * Gọi API lấy loại tài sản
-  //    */
-  //   const assetType = await axios.get(
-  //     "http://localhost:51888/api/v1/AssetTypes"
-  //   );
-  //   this.assetTypes = assetType.data;
-  //   /**
-  //    * Gọi API lấy phòng ban
-  //    */
-  //   const department = await axios.get(
-  //     "http://localhost:51888/api/v1/Departments"
-  //   );
-  //   this.departments = department.data;
-  //   /**
-  //    * Thêm sự kiện phím
-  //    */
-  //   window.addEventListener("keyup", this.addKeyList);
-  // }
+  async created() {
+    /**
+     * Gọi API lấy toàn bộ tài sản
+     */
+    const decrement = await axios.get("https://localhost:44392/api/v1/RefDecrements");
+    this.decrement = decrement.data.data;
+    /**
+     * Thêm sự kiện phím
+     */
+    // window.addEventListener("keyup", this.addKeyList);
+  }
 };
 </script>
 

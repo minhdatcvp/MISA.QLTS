@@ -33,7 +33,7 @@ namespace MISA.QLTS.BACKEND.SERVICE.Interface
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        ServiceResult Delete(T entity);
+        ServiceResult Delete(Guid id);
         /// <summary>
         /// Lấy theo Id
         /// </summary>

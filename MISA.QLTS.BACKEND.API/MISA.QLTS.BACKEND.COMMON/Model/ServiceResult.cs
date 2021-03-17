@@ -22,7 +22,7 @@ namespace MISA.Common.Model
         /// <summary>
         /// Trạng thái của service (true: thành công - false : thất bại)
         /// </summary>
-        public bool Success { get; set; }
+        public bool Success { get; set; } = true;
         /// <summary>
         /// Dữ liệu trả về
         /// </summary>

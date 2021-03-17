@@ -14,66 +14,43 @@ namespace MISA.QLTS.BACKEND.COMMON.Entity
         /// <summary>
         /// ID chứng từ
         /// </summary>
-        private string IdDecrementString { get; set; }
-        public Guid ref_decrement_id
-        {
-            get
-            {
-                return new Guid(IdDecrementString);
-            }
-            set
-            {
-                IdDecrementString = value.ToString();
-            }
-        }
-        private string IdOrganizationString { get; set; }
-
+        public Guid RefDecrementId { get; set; }
         /// <summary>
         /// ID của đơn vị
         /// </summary>
-        public Guid organization_id
-        {
-            get
-            {
-                return new Guid(IdOrganizationString);
-            }
-            set
-            {
-                IdOrganizationString = value.ToString();
-            }
-        }
+        public Guid? OrganizationId { get; set; }
         /// <summary>
         /// Số chứng từ
         /// </summary>
-        public String ref_no { get; set; }
+        public String RefNo { get; set; }
         /// <summary>
         /// Loại chứng từ
         /// </summary>
-        public int ref_type { get; set; }
+        public int RefType { get; set; }
         /// <summary>
         /// Ngày chứng từ
         /// </summary>
-        public DateTime ref_date { get; set; }
+        public DateTime RefDate { get; set; }
         /// <summary>
-        /// 'Chi tiết danh sách tài sản của chứng từ
+        /// Chi tiết danh sách tài sản của chứng từ
         /// </summary>
-        public String ref_detail { get; set; }
+        public String RefDetail { get; set; }
         /// <summary>
         /// Diễn giải
         /// </summary>
-        public String journal_memo { get; set; }
+        public String JournalMemo { get; set; }
         /// <summary>
         /// Ngày ghi giảm
         /// </summary>
-        public DateTime posted_date { get; set; }
+        public DateTime PostedDate { get; set; }
         /// <summary>
         /// Năm làm việc ~ năm chứng từ
         /// </summary>
-        public int tracked_year { get; set; }
+        public int TrackedYear { get; set; }
         /// <summary>
         /// Tổng giá trị còn lại
         /// </summary>
-        public Double cost_total { get; set; }
+        public Double CostTotal { get; set; }
         #endregion
 
         #region Orther

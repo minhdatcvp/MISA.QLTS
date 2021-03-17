@@ -66,12 +66,12 @@ namespace MISA.QLTS.BACKEND.SERVICE.Entity
 
             //Validate dữ liệu(xử lý về nghiệp vụ):
             //1. Validate bắt buộc nhập:
-            if (entity.ref_no == null || entity.ref_no == string.Empty)
+            if (entity.RefNo == null || entity.RefNo == string.Empty)
             {
                 errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.ErrorService_EmptyRefDecrementCode);
                 isValid = false;
             }
-            if (entity.posted_date == null)
+            if (entity.PostedDate == null)
             {
                 errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.ErrorService_EmptyPostedDate);
                 isValid = false;
@@ -79,7 +79,7 @@ namespace MISA.QLTS.BACKEND.SERVICE.Entity
 
             //2. Validate dữ liệu không được phép (trùng):
             // kiểm tra trong database đã tồn tại đã mã kh hay chưa
-            var isExits = _dbConnectionRefDecrement.CheckRefDecrementCodeExits(entity.ref_no);
+            var isExits = _dbConnectionRefDecrement.CheckRefDecrementCodeExits(entity.RefNo);
             if (isExits!= null)
             {
                 errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.ErrorService_DuplicateRefDecrementCode);
@@ -102,22 +102,22 @@ namespace MISA.QLTS.BACKEND.SERVICE.Entity
             //Validate dữ liệu(xử lý về nghiệp vụ):
             //1. Validate bắt buộc nhập:
             //1. Validate bắt buộc nhập:
-            if (entity.ref_no == null || entity.ref_no == string.Empty)
+            if (entity.RefNo == null || entity.RefNo == string.Empty)
             {
                 errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.ErrorService_EmptyRefDecrementCode);
                 isValid = false;
             }
-            if (entity.posted_date == null)
+            if (entity.PostedDate == null)
             {
                 errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.ErrorService_EmptyPostedDate);
                 isValid = false;
             }
             //2. Validate dữ liệu không được phép (trùng):
             // kiểm tra trong database đã tồn tại đã mã kh hay chưa
-            var isExits = _dbConnectionRefDecrement.CheckRefDecrementCodeExits(entity.ref_no);
+            var isExits = _dbConnectionRefDecrement.CheckRefDecrementCodeExits(entity.RefNo);
             if (isExits != null)
             {
-                if (isExits.ref_no == entity.ref_no && isExits.ref_decrement_id != entity.ref_decrement_id)
+                if (isExits.RefNo == entity.RefNo && isExits.RefDecrementId != entity.RefDecrementId)
                 {
                     errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.ErrorService_DuplicateRefDecrementCode);
                     isValid = false;
