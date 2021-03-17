@@ -42,27 +42,51 @@
       <div class="table-form">
         <p>Danh sách tài sản</p>
         <div class="table-asset">
-          <table class="table table-bordered">
+          <table
+            fieldName="RefDetail"
+            id="decrement-sub-grid"
+            class="decrement-sub-grid"
+          >
             <thead>
               <tr>
-                <th scope="col" style="width: 40px" class="order">#</th>
-                <th scope="col" style="width: 89px">Mã tài sản</th>
-                <th scope="col" style="width: 221px">Tên tài sản</th>
-                <th scope="col" style="width: 121px" class="cost_total">
+                <th
+                  style="width:40px;max-width:40px;min-width:40px"
+                  class="text-alight-center"
+                  title="Số thứ tự"
+                >
+                  #
+                </th>
+                <th style="width:89px;max-width:89px;min-width:89px">
+                  Mã tài sản
+                </th>
+                <th style="width:221px;max-width:221px;min-width:221px">
+                  Tên tài sản
+                </th>
+                <th
+                  style="width:121px;max-width:121px;min-width:121px"
+                  class="text-alight-right"
+                >
                   Nguyên giá
                 </th>
-                <th scope="col" style="width: 121px" class="cost_total">
-                  HM lũy kế
+                <th
+                  style="width:121px;max-width:121px;min-width:121px"
+                  class="text-alight-right"
+                  title="Hao mòn lũy kế"
+                >
+                  Tỉ lệ HM năm (%)
                 </th>
-                <th scope="col" style="width: 132px" class="cost_total">
-                  Giá trị còn lại
+                <th
+                  style="width:131px;"
+                  class="text-alight-right"
+                >
+                  Gía trị còn lại
                 </th>
-                <th scope="col" style="width: 35px" class="iconDelete"></th>
+                <th style="width:36px;max-width:36px;min-width:36px"></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in dataAssetForm" :key="index">
-                <td scope="row" class="order">{{ index + 1 }}</td>
+                <td scope="row" class="text-alight-center">{{ index + 1 }}</td>
                 <td id="code">
                   <v-select
                     v-model="item.fixed_asset_code"
@@ -73,29 +97,30 @@
                     label="assetCode"
                   />
                 </td>
-                <td>{{ item.fixed_asset_name }}</td>
-                <td class="cost_total">
+                <td class="out-line">{{ item.fixed_asset_name }}</td>
+                <td class="text-alight-right">
                   {{ formatPrice(item.cost) }}
                 </td>
-                <td class="cost_total">
+                <td class="text-alight-right">
                   {{ formatPrice(item.wearAccumulated) }}
                 </td>
                 <td>
-                  <input
+                  <!-- <input
                     type="text"
                     class="cost_total"
                     :value="item.wearValue"
                     @input="wearValueInput(index)"
                     @blur="handleBlurWearValue(index)"
                     @keypress="onlyNumber"
-                  />
+                  /> -->
                 </td>
-                <td @click="showPopupDelete(item)" class="iconDelete">
+                <td @click="showPopupDelete(item)" class="text-alight-center">
                   <img :src="deleteIcon" alt="delete" />
                 </td>
               </tr>
             </tbody>
           </table>
+          <!-- ----------------------------- -->
         </div>
       </div>
       <div class="event-line">
@@ -119,8 +144,7 @@
           Hủy
         </button>
         <!-- Validate dữ liệu trên form rồi kiểm tra xem là thêm hay sửa  -->
-        <button class="btn-add btn-submit">
-          <!-- @click.prevent="addDataAsset" -->
+        <button class="btn-add btn-submit" @click.prevent="addDataAsset">
           Đồng ý
         </button>
       </footer>
@@ -156,7 +180,7 @@ export default {
     // dataDepartments: Array, // Mảng dữ liệu phòng ban truyền từ Comp-list xuống
     // dataAssetTypes: Array, // Mảng dữ liệu loại tài sản truyền từ Comp-list xuống
     // itemTemp: Object // Dữ liệu 1 đối tượng để truyền vào form
-    idItem: String,
+    idItem: String
   },
   data() {
     return {
@@ -178,7 +202,7 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null,
+          wearValue: null
         },
         {
           assetId: null,
@@ -186,7 +210,7 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null,
+          wearValue: null
         },
         {
           assetId: null,
@@ -194,7 +218,7 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null,
+          wearValue: null
         },
         {
           assetId: null,
@@ -202,7 +226,7 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null,
+          wearValue: null
         },
         {
           assetId: null,
@@ -210,8 +234,8 @@ export default {
           assetName: null,
           originalPrice: null,
           wearAccumulated: null,
-          wearValue: null,
-        },
+          wearValue: null
+        }
       ],
       /**
        * Dữ liệu tài sản gọi lên từ api để bind dữ liệu vào bảng trong form
@@ -226,14 +250,14 @@ export default {
           depreciation_year_price: 627237005.6214,
           tracked_year: 2019,
           life_time: -1095589246,
-          production_year: 2006,
-        },
+          production_year: 2006
+        }
       ],
-      textCode: null,
+      textCode: "",
       iData: 0,
       isPopup: false,
       itemDelete: {},
-      dataItem: {},
+      dataItem: {}
     };
   },
   /**
@@ -540,116 +564,117 @@ export default {
     // /**
     //  * Click vào nút lưu thực hiện thêm data khi id null và sửa data khi id khác null
     //  */
-    // // addDataAsset() {
-    // //   // kiểm tra nghiệp vụ nếu false thì thực hiện thêm hoặc sửa
-    // //   if (this.validateData.error) {
-    // //     this.$notify({
-    // //       group: "foo",
-    // //       title: "Cảnh báo",
-    // //       text: this.validateData.msg,
-    // //       type: "error"
-    // //     });
-    // //     // focus vào ô input
-    // //     switch (this.validateData.typeError) {
-    // //       case "code":
-    // //         this.$refs.code.focus();
-    // //         this.isCheckCode = true;
-    // //         this.msgCode = this.validateData.msg;
-    // //         break;
-    // //       case "name":
-    // //         this.$refs.name.focus();
-    // //         this.isCheckName = true;
-    // //         this.msgName = this.validateData.msg;
-    // //         break;
-    // //       case "department":
-    // //         this.$refs.department.focus();
-    // //         break;
-    // //       case "type":
-    // //         this.$refs.type.focus();
-    // //         break;
-    // //       default:
-    // //         break;
-    // //     }
-    // //   } else {
-    // //     //chuyển datetime từ "" -> null
-    // //     if (this.dataDate == "") {
-    // //       this.dataItem.increaseDate = null;
-    // //     }
-    // //     //  debugger // eslint-disable-line
-    // //     if (this.dataItem.assetId == null) {
-    // //       // debugger // eslint-disable-line
-    // //       // Thực hiện post
-    // //       axios
-    // //         .post("http://localhost:51888/api/v1/Assets", this.dataItem)
-    // //         .then(response => {
-    // //           if (!response.data.success) {
-    // //             this.$notify({
-    // //               group: "foo",
-    // //               title: "Lỗi",
-    // //               text: response.data.data.userMsg[0],
-    // //               type: "error"
-    // //             });
-    // //           } else {
-    // //             this.$notify({
-    // //               group: "foo",
-    // //               title: "Thành công",
-    // //               text: "Thêm mới thành công",
-    // //               type: "success"
-    // //             });
-    // //             this.showOffForm();
-    // //             location.reload();
-    // //           }
-    // //           console.log(response);
-    // //         })
-    // //         .catch(error => {
-    // //           this.$notify({
-    // //             group: "foo",
-    // //             title: "Lỗi",
-    // //             text:
-    // //               "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
-    // //             type: "error"
-    // //           });
-    // //           console.log(error);
-    // //         });
-    // //     } else {
-    // //       // Thực hiện put
-    // //       let apiUrl =
-    // //         "http://localhost:51888/api/v1/Assets/" + this.dataItem.assetId;
-    // //       axios
-    // //         .put(apiUrl, this.dataItem)
-    // //         .then(response => {
-    // //           if (!response.data.success) {
-    // //             this.$notify({
-    // //               group: "foo",
-    // //               title: "Lỗi",
-    // //               text: response.data.data.userMsg[0],
-    // //               type: "error"
-    // //             });
-    // //           } else {
-    // //             this.$notify({
-    // //               group: "foo",
-    // //               title: "Thành công",
-    // //               text: "Cập nhật thành công",
-    // //               type: "success"
-    // //             });
-    // //             this.showOffForm();
-    // //             location.reload();
-    // //           }
-    // //           console.log(response);
-    // //         })
-    // //         .catch(error => {
-    // //           this.$notify({
-    // //             group: "foo",
-    // //             title: "Lỗi",
-    // //             text:
-    // //               "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
-    // //             type: "error"
-    // //           });
-    // //           console.log(error);
-    // //         });
-    // //     }
-    // //   }
-    // // }
+    addDataAsset() {
+      console.log(JSON.stringify(this.dataAssetForm));
+      // kiểm tra nghiệp vụ nếu false thì thực hiện thêm hoặc sửa
+      // if (this.validateData.error) {
+      //   this.$notify({
+      //     group: "foo",
+      //     title: "Cảnh báo",
+      //     text: this.validateData.msg,
+      //     type: "error"
+      //   });
+      //   // focus vào ô input
+      //   switch (this.validateData.typeError) {
+      //     case "code":
+      //       this.$refs.code.focus();
+      //       this.isCheckCode = true;
+      //       this.msgCode = this.validateData.msg;
+      //       break;
+      //     case "name":
+      //       this.$refs.name.focus();
+      //       this.isCheckName = true;
+      //       this.msgName = this.validateData.msg;
+      //       break;
+      //     case "department":
+      //       this.$refs.department.focus();
+      //       break;
+      //     case "type":
+      //       this.$refs.type.focus();
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      // } else {
+      //   //chuyển datetime từ "" -> null
+      //   if (this.dataDate == "") {
+      //     this.dataItem.increaseDate = null;
+      //   }
+      //   //  debugger // eslint-disable-line
+      //   if (this.dataItem.assetId == null) {
+      //     // debugger // eslint-disable-line
+      //     // Thực hiện post
+      //     axios
+      //       .post("http://localhost:51888/api/v1/Assets", this.dataItem)
+      //       .then(response => {
+      //         if (!response.data.success) {
+      //           this.$notify({
+      //             group: "foo",
+      //             title: "Lỗi",
+      //             text: response.data.data.userMsg[0],
+      //             type: "error"
+      //           });
+      //         } else {
+      //           this.$notify({
+      //             group: "foo",
+      //             title: "Thành công",
+      //             text: "Thêm mới thành công",
+      //             type: "success"
+      //           });
+      //           this.showOffForm();
+      //           location.reload();
+      //         }
+      //         console.log(response);
+      //       })
+      //       .catch(error => {
+      //         this.$notify({
+      //           group: "foo",
+      //           title: "Lỗi",
+      //           text:
+      //             "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
+      //           type: "error"
+      //         });
+      //         console.log(error);
+      //       });
+      //   } else {
+      //     // Thực hiện put
+      //     let apiUrl =
+      //       "http://localhost:51888/api/v1/Assets/" + this.dataItem.assetId;
+      //     axios
+      //       .put(apiUrl, this.dataItem)
+      //       .then(response => {
+      //         if (!response.data.success) {
+      //           this.$notify({
+      //             group: "foo",
+      //             title: "Lỗi",
+      //             text: response.data.data.userMsg[0],
+      //             type: "error"
+      //           });
+      //         } else {
+      //           this.$notify({
+      //             group: "foo",
+      //             title: "Thành công",
+      //             text: "Cập nhật thành công",
+      //             type: "success"
+      //           });
+      //           this.showOffForm();
+      //           location.reload();
+      //         }
+      //         console.log(response);
+      //       })
+      //       .catch(error => {
+      //         this.$notify({
+      //           group: "foo",
+      //           title: "Lỗi",
+      //           text:
+      //             "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
+      //           type: "error"
+      //         });
+      //         console.log(error);
+      //       });
+      //   }
+      // }
+    }
   },
   computed: {
     /**
@@ -657,7 +682,7 @@ export default {
      */
     options() {
       let assetC = [];
-      this.dataAsset.forEach((element) => {
+      this.dataAsset.forEach(element => {
         assetC.push(element.fixed_asset_code);
         // let optionCode = {};
         // optionCode.assetCode = element.assetCode;
@@ -665,7 +690,7 @@ export default {
         // assetC.push(optionCode);
       });
       return assetC;
-    },
+    }
     //   originalPrice() {
     //     let price = null;
     //     if (this.dataItem.originalPrice != null) {
@@ -728,9 +753,9 @@ export default {
     //   }
   },
   watch: {
-    textCode: function () {
-      if (this.textCode != null) {
-        this.dataAsset.forEach((element) => {
+    textCode: function() {
+      if (this.textCode != "") {
+        this.dataAsset.forEach(element => {
           if (element.fixed_asset_code == this.textCode) {
             this.dataAssetForm[this.iData].fixed_asset_id =
               element.fixed_asset_id;
@@ -763,8 +788,8 @@ export default {
         this.dataAssetForm[this.iData].life_time = null;
         this.dataAssetForm[this.iData].production_year = null;
       }
-      this.textCode = null;
-    },
+      // this.textCode = "";
+    }
     // dataItem: function () {
     //   this.dataAssetForm = JSON.parse(this.dataItem.refDetail.toString());
     // }
@@ -776,15 +801,15 @@ export default {
     if (this.idItem != null) {
       let urlApi =
         "https://localhost:44392/api/v1/RefDecrements/" + this.idItem;
-      axios.get(urlApi).then((reponsive) => {
+      axios.get(urlApi).then(reponsive => {
         this.dataItem = reponsive.data.data;
-        this.dataAssetForm = JSON.parse(this.dataItem.refDetail.toString());
+        this.dataAssetForm = JSON.parse(this.dataItem.refDetail);
       });
     }
     const assets = await axios.get("https://localhost:44392/api/v1/Assets");
     this.dataAsset = assets.data.data;
     // window.addEventListener("keyup", this.addKeyForm);
-  },
+  }
 };
 </script>
 
@@ -883,19 +908,6 @@ Bảng danh sách tài sản
   margin-top: 18px;
   margin-right: 20px;
 }
-.table-form thead th {
-  font-size: 13px;
-  font-weight: 500;
-  color: #212121;
-  background-color: #e8e8e8;
-  border: 1px solid #e0e0e0;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  white-space: nowrap;
-  padding-left: 13px;
-  position: sticky;
-  top: -1px;
-}
 .table-form tbody td {
   padding-top: 7px;
   padding-bottom: 8px;
@@ -904,9 +916,6 @@ Bảng danh sách tài sản
 .table-asset {
   height: 212px;
   overflow: auto;
-}
-.table-asset .table {
-  margin-bottom: 0;
 }
 .table-asset input {
   border: none;
@@ -919,12 +928,39 @@ Bảng danh sách tài sản
 .table-asset input:focus {
   outline: none;
 }
-td#code {
-  padding: 0;
-  position: relative;
-}
-.table-asset .iconDelete {
+/* .table-asset .iconDelete {
   padding-left: 12px;
+} */
+.decrement-sub-grid thead {
+  width: 100px !important;
+}
+.decrement-sub-grid th {
+  padding: 0 13px 0px 13px ;
+  box-sizing: border-box ;
+  height: 35px ;
+  background-color: #e8e8e8;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: #212121;
+  position: sticky;
+  top: 0px;
+      z-index: 10;
+}
+.decrement-sub-grid tbody tr td {
+  height: 35px ;
+  padding: 0 0 0 0;
+  border: #e0e0e0 solid 1px ;
+  font-size: 13px;
+  color: #373737;
+  border-right: none;
+}
+table .out-line {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 221px;
+    overflow: hidden;
+    padding: 0 13px !important;
 }
 /*--------------2 nút thêm và xóa--------*/
 .event-line button.btn-add {

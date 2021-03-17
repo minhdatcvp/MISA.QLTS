@@ -1,4 +1,6 @@
-Css cho phần danh sách tài sản table {
+/* Css cho phần danh sách tài sản  */
+
+table {
     border: none;
     border-collapse: collapse;
     width: 100%;
@@ -19,7 +21,6 @@ Css cho phần danh sách tài sản table {
     background-color: white;
     border: none;
     font-size: 10px;
-    /* font-family: GoogleSans-Thin; */
     text-align: left;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -152,4 +153,13 @@ tbody tr:hover .fuctionCol div {
 .table-data td.check-box {
     border-left: none;
     border-right: 1px solid #e2e2e2;
+}
+
+.text-alight-center {
+    text-align: center !important;
+}
+
+.text-alight-right {
+    text-align: right !important;
+    padding-right: 13px !important;
 }

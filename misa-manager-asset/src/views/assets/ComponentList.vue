@@ -31,7 +31,7 @@
             <th width="2%" class="order">STT</th>
             <th width="6%" class="posted_date">NGÀY GHI GIẢM</th>
             <th width="15%">SỐ CHỨNG TỪ</th>
-            <th width="50%">LÝ DO GHI GIẢM</th>
+            <th width="50%" style="max-width:60%" class="out-line">LÝ DO GHI GIẢM</th>
             <th width="8%" class="cost_total">GIÁ TRỊ CÒN LẠI</th>
             <th  width="5%" class="fuctionCol">CHỨC NĂNG</th>
           </tr>
