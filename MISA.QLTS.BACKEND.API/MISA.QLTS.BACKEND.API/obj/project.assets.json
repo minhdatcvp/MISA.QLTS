@@ -1546,20 +1546,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nmdat\\.nuget\\packages\\": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nmdat\\Desktop\\nmdat\\MISA.QLTS\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API.csproj",
+      "projectUniqueName": "E:\\MISA\\gđ2\\MISA1\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API.csproj",
       "projectName": "MISA.QLTS.BACKEND.API",
-      "projectPath": "C:\\Users\\nmdat\\Desktop\\nmdat\\MISA.QLTS\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API.csproj",
-      "packagesPath": "C:\\Users\\nmdat\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nmdat\\Desktop\\nmdat\\MISA.QLTS\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API\\obj\\",
+      "projectPath": "E:\\MISA\\gđ2\\MISA1\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "E:\\MISA\\gđ2\\MISA1\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.API\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\nmdat\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
@@ -1572,11 +1577,11 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\nmdat\\Desktop\\nmdat\\MISA.QLTS\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.COMMON\\MISA.QLTS.BACKEND.COMMON.csproj": {
-              "projectPath": "C:\\Users\\nmdat\\Desktop\\nmdat\\MISA.QLTS\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.COMMON\\MISA.QLTS.BACKEND.COMMON.csproj"
+            "E:\\MISA\\gđ2\\MISA1\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.COMMON\\MISA.QLTS.BACKEND.COMMON.csproj": {
+              "projectPath": "E:\\MISA\\gđ2\\MISA1\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.COMMON\\MISA.QLTS.BACKEND.COMMON.csproj"
             },
-            "C:\\Users\\nmdat\\Desktop\\nmdat\\MISA.QLTS\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.SERVICE\\MISA.QLTS.BACKEND.SERVICE.csproj": {
-              "projectPath": "C:\\Users\\nmdat\\Desktop\\nmdat\\MISA.QLTS\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.SERVICE\\MISA.QLTS.BACKEND.SERVICE.csproj"
+            "E:\\MISA\\gđ2\\MISA1\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.SERVICE\\MISA.QLTS.BACKEND.SERVICE.csproj": {
+              "projectPath": "E:\\MISA\\gđ2\\MISA1\\MISA.QLTS\\MISA.QLTS.BACKEND.API\\MISA.QLTS.BACKEND.SERVICE\\MISA.QLTS.BACKEND.SERVICE.csproj"
             }
           }
         }
@@ -1628,7 +1633,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

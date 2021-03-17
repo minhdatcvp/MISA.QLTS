@@ -63,24 +63,11 @@ table tbody tr:hover {
     background-color: #f0f8ff;
 }
 
-table tbody tr:hover input.cost_total {
-    background-color: #f0f8ff;
-}
-
 
 /* Css cho khi click vào item */
 
 .highlight {
     background-color: #f0f8ff;
-}
-
-
-/*-----Gía-----------------*/
-
-.cost_total {
-    text-align: right !important;
-    padding-right: 15px;
-    min-width: 140px;
 }
 
 
@@ -162,4 +149,8 @@ tbody tr:hover .fuctionCol div {
 .text-alight-right {
     text-align: right !important;
     padding-right: 13px !important;
+}
+
+table tbody tr:hover .text-alight-right {
+    background-color: #f0f8ff;
 }

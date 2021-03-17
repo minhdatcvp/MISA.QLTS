@@ -13,11 +13,11 @@
         />
       </div>
       <div class="filter-right">
-        <button type="button" class="btn-add"  @click="showForm">Thêm</button>
+        <button type="button" class="btn-add" @click="showForm">Thêm</button>
         <!-- Icon refresh  -->
         <img :src="refreshIcon" alt="refresh" @click="reRender" />
         <!-- Icon delete  -->
-        <img :src="deleteIcon" alt="delete" @click="isdeleteAllItem"/>
+        <img :src="deleteIcon" alt="delete" @click="isdeleteAllItem" />
       </div>
     </div>
     <!-- Mục danh sách item  -->
@@ -25,15 +25,17 @@
       <table class="table">
         <thead>
           <tr>
-            <th v-if="isCheckbox" width="1%" >
+            <th v-if="isCheckbox" width="1%">
               <img :src="deleteIcon" alt="delete" @click="deletesAsset" />
             </th>
             <th width="2%" class="order">STT</th>
             <th width="6%" class="posted_date">NGÀY GHI GIẢM</th>
             <th width="15%">SỐ CHỨNG TỪ</th>
-            <th width="50%" style="max-width:60%" class="out-line">LÝ DO GHI GIẢM</th>
+            <th width="50%" style="max-width: 60%" class="out-line">
+              LÝ DO GHI GIẢM
+            </th>
             <th width="8%" class="cost_total">GIÁ TRỊ CÒN LẠI</th>
-            <th  width="5%" class="fuctionCol">CHỨC NĂNG</th>
+            <th width="5%" class="fuctionCol">CHỨC NĂNG</th>
           </tr>
         </thead>
         <tbody v-if="decrement.length > 0">
@@ -60,7 +62,7 @@
             </td>
             <td>{{ item.refNo }}</td>
             <td>{{ item.journalMemo }}</td>
-            <td class="cost_total">
+            <td class="text-alight-right">
               {{ formatPrice(item.costTotal) }}
             </td>
             <td class="fuctionCol">
@@ -88,24 +90,13 @@
             <button class="btn-add btn-cancel" @click="offPopupDelete">
               Hủy
             </button>
-            <button class="btn-add btn-del">Xóa</button>
-            <!-- @click="deleteItem" -->
+            <button class="btn-add btn-del" @click="deleteItem">Xóa</button>
           </div>
         </div>
       </div>
     </transition>
     <!-- Hiển thị form khi isForm = true , ẩn khi isForm = false  -->
-    <component-form
-      v-if="isForm"
-      :idItem="idItem"
-      @resetItem="resetItem"
-    />
-    <!-- :dataAsset="assets"
-      :dataAssetTypes="assetTypes"
-      :dataDepartments="departments"
-      :itemTemp="itemTemp"
-      @resetItem="resetItem" -->
-    <!-- Mục thống kê tổng  -->
+    <component-form v-if="isForm" :idItem="idItem" @resetItem="resetItem" />
     <footer>
       <p>Tổng số chứng từ : {{ decrement.length }}</p>
       <p class="sum-asset">Tổng giá trị còn lại: {{ formatPrice(sumPrice) }}</p>
@@ -120,7 +111,7 @@ import ComponentForm from "./ComponentForm.vue";
 import moment from "moment";
 export default {
   components: {
-    ComponentForm
+    ComponentForm,
   },
   data() {
     return {
@@ -128,7 +119,7 @@ export default {
       deleteIcon: require("../../assets/icon/trash.svg"),
       // Dữ liệu lấy về từ api
       decrement: [],
-      idItem:null, // id truyền xuống form
+      idItem: null, // id truyền xuống form
       isActive: 0, // lưu item đang được trỏ tới
       //   componentKey: 0, // Biến refresh table
       isCheckbox: false, // Hiển thị checkbox
@@ -236,45 +227,69 @@ export default {
      * Xóa 1 object trong database ảo
      * Call api xóa trên database thực
      */
-    // deleteItem() {
-    //   if (this.idDeletes.length == 0) {
-    //     // xóa trong mảng
-    //     this.assets.splice(this.assets.indexOf(this.itemDelete), 1);
-    //     // call api xóa trên database
-    //     let apiUrl =
-    //       "http://localhost:51888/api/v1/Assets/" + this.itemDelete.assetId;
-    //     const response = axios.delete(apiUrl).catch(e => console.log(e));
-    //     console.log(response);
-    //     this.$notify({
-    //       group: "foo",
-    //       title: "Thành công",
-    //       text: "Xóa tài sản thành công",
-    //       type: "success"
-    //     });
-    //   } else {
-    //     var listDeletes = "";
-    //     this.idDeletes.forEach(element => {
-    //       listDeletes += "," + element.assetId;
-    //     });
-    //     this.idDeletes.forEach(item => {
-    //       this.assets.splice(this.assets.indexOf(item), 1);
-    //     });
-    //     let apiUrl =
-    //       "http://localhost:51888/api/v1/Assets?param=" +
-    //       listDeletes.substring(1);
-    //     // call api xóa nhiều tài sản trên database
-    //     const response = axios.delete(apiUrl).catch(e => console.log(e));
-    //     console.log(response);
-    //     this.$notify({
-    //       group: "foo",
-    //       title: "Thành công",
-    //       text: "Xóa tài sản thành công",
-    //       type: "success"
-    //     });
-    //     this.idDeletes = [];
-    //   }
-    //   this.offPopupDelete();
-    // },
+    deleteItem() {
+      if (this.idDeletes.length == 0) {
+        // console.log(this.itemDelete.refDecrementId);
+        // xóa trong mảng
+        this.decrement.splice(this.decrement.indexOf(this.itemDelete), 1);
+        // call api xóa trên database
+        let apiUrl =
+          "https://localhost:44392/api/v1/RefDecrements/" +
+          this.itemDelete.refDecrementId;
+        axios
+          .delete(apiUrl)
+          .then((response) => {
+            if (!response.data.success) {
+              this.$notify({
+                group: "foo",
+                title: "Lỗi",
+                text:
+                  "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
+                type: "error",
+              });
+            } else {
+              this.$notify({
+                group: "foo",
+                title: "Thành công",
+                text: "Xóa tài sản thành công",
+                type: "success",
+              });
+            }
+            console.log(response);
+          })
+          .catch((error) => {
+            this.$notify({
+              group: "foo",
+              title: "Lỗi",
+              text: "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
+              type: "error",
+            });
+            console.log(error);
+          });
+      } else {
+        // var listDeletes = "";
+        // this.idDeletes.forEach(element => {
+        //   listDeletes += "," + element.assetId;
+        // });
+        // this.idDeletes.forEach(item => {
+        //   this.assets.splice(this.assets.indexOf(item), 1);
+        // });
+        // let apiUrl =
+        //   "http://localhost:51888/api/v1/Assets?param=" +
+        //   listDeletes.substring(1);
+        // // call api xóa nhiều tài sản trên database
+        // const response = axios.delete(apiUrl).catch(e => console.log(e));
+        // console.log(response);
+        // this.$notify({
+        //   group: "foo",
+        //   title: "Thành công",
+        //   text: "Xóa tài sản thành công",
+        //   type: "success"
+        // });
+        // this.idDeletes = [];
+      }
+      this.offPopupDelete();
+    },
     /**
      * Xóa nhiều tài sản cùng 1 lúc
      */
@@ -285,12 +300,12 @@ export default {
           group: "foo",
           title: "Cảnh báo",
           text: "Bạn chưa chọn tài sản xóa!",
-          type: "error"
+          type: "error",
         });
       } else {
         this.showPopupDeletes();
       }
-    }
+    },
   },
   computed: {
     /**
@@ -308,7 +323,7 @@ export default {
         sum += this.decrement[i].costTotal;
       }
       return sum;
-    }
+    },
     /**
      * Hàm lọc giá trị theo ô tìm kiếm (texsearch)
      * Lọc theo phòng ban (departmentFilter)
@@ -346,13 +361,15 @@ export default {
     /**
      * Gọi API lấy toàn bộ tài sản
      */
-    const decrement = await axios.get("https://localhost:44392/api/v1/RefDecrements");
+    const decrement = await axios.get(
+      "https://localhost:44392/api/v1/RefDecrements"
+    );
     this.decrement = decrement.data.data;
     /**
      * Thêm sự kiện phím
      */
     // window.addEventListener("keyup", this.addKeyList);
-  }
+  },
 };
 </script>
 
