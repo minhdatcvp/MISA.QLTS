@@ -98,7 +98,7 @@
                 <td id="code">
                   <v-select
                     v-model="item.fixed_asset_code"
-                    :options="options"
+                    :options="optionsCode"
                     append-to-body
                     :calculate-position="withPopper"
                     @input="changeDataAsset(index, item.fixed_asset_code)"
@@ -109,10 +109,16 @@
                   {{ item.fixed_asset_name }}
                 </td>
                 <td>
-                  <input
+                  <!-- <input
                     type="text"
                     class="text-alight-right"
                     v-model="item.cost"
+                    @keypress="onlyNumber"
+                  /> -->
+                  <DxNumberBox
+                    v-model="item.cost"
+                    format="#,##0"
+                    class="text-alight-right"
                     @keypress="onlyNumber"
                   />
                 </td>
@@ -191,10 +197,11 @@ import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 import "vue-select/dist/vue-select.css";
 import { createPopper } from "@popperjs/core";
+import DxNumberBox from "devextreme-vue/number-box";
 export default {
-  components: { DatePicker },
+  components: { DatePicker, DxNumberBox },
   props: {
-    idItem: String
+    idItem: String,
   },
   data() {
     return {
@@ -221,7 +228,7 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null
+          resValue: null,
         },
         {
           fixed_asset_id: null,
@@ -234,7 +241,7 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null
+          resValue: null,
         },
         {
           fixed_asset_id: null,
@@ -247,7 +254,7 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null
+          resValue: null,
         },
         {
           fixed_asset_id: null,
@@ -260,7 +267,7 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null
+          resValue: null,
         },
         {
           fixed_asset_id: null,
@@ -273,8 +280,8 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null
-        }
+          resValue: null,
+        },
       ],
       /**
        * Dữ liệu tài sản gọi lên từ api để bind dữ liệu vào bảng trong form
@@ -289,8 +296,8 @@ export default {
           depreciation_year_price: 627237005.6214,
           tracked_year: 2019,
           life_time: -1095589246,
-          production_year: 2006
-        }
+          production_year: 2006,
+        },
       ],
       textCode: "", // mã tài sản khi select
       iData: 0,
@@ -298,7 +305,8 @@ export default {
       itemDelete: 0, // item tài sản cần xóa
       dataItem: {}, // Data truyền vào api để post và put
       maxCode: 50, // giới hạn mã chứng từ
-      isCheckCode: false // kiểm tra cảnh báo
+      isCheckCode: false, // kiểm tra cảnh báo
+      options: [],
     };
   },
   methods: {
@@ -419,7 +427,7 @@ export default {
             group: "foo",
             title: "Cảnh báo",
             text: "Mã tài sản không được nhập quá " + this.maxCode + " kí tự",
-            type: "error"
+            type: "error",
           });
         }
       }
@@ -458,7 +466,7 @@ export default {
           group: "foo",
           title: "Cảnh báo",
           text: this.validateData.msg,
-          type: "error"
+          type: "error",
         });
         // focus vào ô input
         switch (this.validateData.typeError) {
@@ -476,7 +484,7 @@ export default {
             break;
         }
       } else {
-        var filtered = this.dataAssetForm.filter(function(el) {
+        var filtered = this.dataAssetForm.filter(function (el) {
           return el.fixed_asset_code != null;
         });
         this.dataItem.refDetail = JSON.stringify(filtered);
@@ -488,33 +496,33 @@ export default {
           console.log("post");
           axios
             .post("https://localhost:44392/api/v1/RefDecrements", this.dataItem)
-            .then(response => {
+            .then((response) => {
               if (!response.data.success) {
                 this.$notify({
                   group: "foo",
                   title: "Lỗi",
                   text: response.data.data.userMsg[0],
-                  type: "error"
+                  type: "error",
                 });
               } else {
                 this.$notify({
                   group: "foo",
                   title: "Thành công",
                   text: "Thêm mới thành công",
-                  type: "success"
+                  type: "success",
                 });
                 this.showOffForm();
                 location.reload();
               }
               console.log(response);
             })
-            .catch(error => {
+            .catch((error) => {
               this.$notify({
                 group: "foo",
                 title: "Lỗi",
                 text:
                   "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
-                type: "error"
+                type: "error",
               });
               console.log(error);
             });
@@ -522,39 +530,39 @@ export default {
           // Thực hiện put
           axios
             .put("https://localhost:44392/api/v1/RefDecrements", this.dataItem)
-            .then(response => {
+            .then((response) => {
               if (!response.data.success) {
                 this.$notify({
                   group: "foo",
                   title: "Lỗi",
                   text: response.data.data.userMsg[0],
-                  type: "error"
+                  type: "error",
                 });
               } else {
                 this.$notify({
                   group: "foo",
                   title: "Thành công",
                   text: "Cập nhật thành công",
-                  type: "success"
+                  type: "success",
                 });
                 this.showOffForm();
                 location.reload();
               }
               console.log(response);
             })
-            .catch(error => {
+            .catch((error) => {
               this.$notify({
                 group: "foo",
                 title: "Lỗi",
                 text:
                   "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
-                type: "error"
+                type: "error",
               });
               console.log(error);
             });
         }
       }
-    }
+    },
   },
   computed: {
     // wearValue() {
@@ -573,73 +581,62 @@ export default {
     /**
      * lấy giá trị từ api tài sản đẩy vào mảng để hiển thị select
      */
-    options() {
-      let assetC = [];
-      var result = [];
-      // let filterCode = this.textCode;
-      this.dataAsset.forEach(element => {
-        assetC.push(element.fixed_asset_code);
+    optionsCode() {
+      var result = this.options;
+      this.dataAssetForm.forEach((element) => {
+        result = result.filter((code) => code != element.fixed_asset_code);
       });
-      
-      this.dataAssetForm.forEach(element => {
-        if (element.fixed_asset_code != null) {
-          result = assetC.filter(code => code != element.fixed_asset_code);
-        }
-      });
-      // const result = assetC.filter(code => code != filterCode);
-      return result;
+      return result.sort();
     },
-    //   originalPrice() {
-    //     let price = null;
-    //     if (this.dataItem.originalPrice != null) {
-    //       price = this.dataItem.originalPrice.toString();
-    //       // // .toString()
-    //       // .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    //     }
-    //     return price;
-    //   },
-    //   /**
-    //    * Validate dữ liệu trên form
-    //    */
+    /**
+     * Validate dữ liệu trên form
+     */
     validateData() {
-      // debugger // eslint-disable-line
+      /**
+       * Gía trị trả về khi validate
+       */
       let returnData = {
         error: false,
         msg: "",
-        typeError: ""
+        typeError: "",
       };
-      //1. validate để trống
-      var filtered = this.dataAssetForm.filter(function(el) {
+      //1. validate để trống danh sách ghi giảm
+      var filtered = this.dataAssetForm.filter(function (el) {
         return el.fixed_asset_code != null;
       });
       if (filtered.length == 0) {
         returnData = {
           error: true,
-          msg: "Phải có ít nhất một chứng từ ghi giảm"
+          msg: "Phải có ít nhất một chứng từ ghi giảm",
         };
       }
+      // 2. Validate để trống mã
       if (this.dataItem.refNo == "" || this.dataItem.refNo == null) {
         returnData = {
           error: true,
           msg: "Vui lòng điền mã chứng từ",
-          typeError: "refNo"
+          typeError: "refNo",
         };
       }
+      // 3. Validate để trống ngày tháng
       if (this.dataItem.refDate == "" || this.dataItem.refDate == null) {
         returnData = {
           error: true,
           msg: "vui lòng chọn ngày ghi giảm",
-          typeError: "postDate"
+          typeError: "postDate",
         };
       }
       return returnData;
-    }
+    },
   },
+  /**
+   * Khi chọn mã tự động bind dữ liệu
+   */
   watch: {
-    textCode: function() {
+    textCode: function () {
       let data = this.dataAssetForm[this.iData];
       if (this.textCode != "") {
-        this.dataAsset.forEach(element => {
+        this.dataAsset.forEach((element) => {
           if (element.fixed_asset_code == this.textCode) {
             data.fixed_asset_id = element.fixed_asset_id;
             data.fixed_asset_code = element.fixed_asset_code;
@@ -669,7 +666,7 @@ export default {
         data.wearValue = null;
         data.resValue = null;
       }
-    }
+    },
   },
   /*--------------LIFE CYCLE-----------------------------------------*/
   async created() {
@@ -679,15 +676,19 @@ export default {
     if (this.idItem != null && this.idItem != "") {
       let urlApi =
         "https://localhost:44392/api/v1/RefDecrements/" + this.idItem;
-      axios.get(urlApi).then(reponsive => {
+      axios.get(urlApi).then((reponsive) => {
         this.dataItem = reponsive.data.data;
         this.dataAssetForm = JSON.parse(this.dataItem.refDetail);
       });
     }
-    const assets =  await axios.get("https://localhost:44392/api/v1/Assets");
+    const assets = await axios.get("https://localhost:44392/api/v1/Assets");
     this.dataAsset = assets.data.data;
+
+    assets.data.data.forEach((element) => {
+      this.options.push(element.fixed_asset_code);
+    });
     // window.addEventListener("keyup", this.addKeyForm);
-  }
+  },
   // beforeUpdate() {
   //   this.dataAssetForm.forEach((element) => {
   //     if (element.fixed_asset_code != null) {

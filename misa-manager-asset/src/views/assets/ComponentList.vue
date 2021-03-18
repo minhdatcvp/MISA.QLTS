@@ -42,7 +42,7 @@
           <!-- Duyệt mảng rồi render ra các item  -->
           <!-- khi click vào item -> gán biến isActive bằng giá trị index để hiển thị active  -->
           <tr
-            v-for="(item, index) in decrement"
+            v-for="(item, index) in filteredRefDecrement"
             :key="index"
             :class="{ highlight: isActive == index }"
             @click="activeItem(index)"
@@ -266,27 +266,6 @@ export default {
             });
             console.log(error);
           });
-      } else {
-        // var listDeletes = "";
-        // this.idDeletes.forEach(element => {
-        //   listDeletes += "," + element.assetId;
-        // });
-        // this.idDeletes.forEach(item => {
-        //   this.assets.splice(this.assets.indexOf(item), 1);
-        // });
-        // let apiUrl =
-        //   "http://localhost:51888/api/v1/Assets?param=" +
-        //   listDeletes.substring(1);
-        // // call api xóa nhiều tài sản trên database
-        // const response = axios.delete(apiUrl).catch(e => console.log(e));
-        // console.log(response);
-        // this.$notify({
-        //   group: "foo",
-        //   title: "Thành công",
-        //   text: "Xóa tài sản thành công",
-        //   type: "success"
-        // });
-        // this.idDeletes = [];
       }
       this.offPopupDelete();
     },
@@ -326,35 +305,21 @@ export default {
     },
     /**
      * Hàm lọc giá trị theo ô tìm kiếm (texsearch)
-     * Lọc theo phòng ban (departmentFilter)
-     * Lọc theo loại tài sản (assetTypeFilter)
      */
-    // filteredAsset() {
-    //   // debugger // eslint-disable-line
-    //   let filterAssetType = this.assetTypeFilter,
-    //     filterDepartment = this.departmentFilter,
-    //     filterText = this.textSearch;
+    filteredRefDecrement() {
+      let filterText = this.textSearch;
 
-    //   return this.assets.filter(function (item) {
-    //     let filtered = true;
-    //     if (filterAssetType && filterAssetType.length > 0) {
-    //       filtered = item.assetTypeId == filterAssetType;
-    //     }
-    //     if (filtered) {
-    //       if (filterDepartment && filterDepartment.length > 0) {
-    //         filtered = item.departmentId == filterDepartment;
-    //       }
-    //     }
-    //     if (filtered) {
-    //       if (filterText && filterText.length > 0) {
-    //         filtered =
-    //           item.assetCode.toLowerCase().includes(filterText.toLowerCase()) ||
-    //           item.assetName.toLowerCase().includes(filterText.toLowerCase());
-    //       }
-    //     }
-    //     return filtered;
-    //   });
-    // },
+      return this.decrement.filter(function (item) {
+        let filtered = true;
+        if (filtered) {
+          if (filterText && filterText.length > 0) {
+            filtered =
+              item.refNo.toLowerCase().includes(filterText.toLowerCase())
+          }
+        }
+        return filtered;
+      });
+    },
   },
   // call api lấy toàn bộ dữ liệu tài sản
   async created() {
