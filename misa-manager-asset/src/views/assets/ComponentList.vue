@@ -420,9 +420,6 @@ footer {
   width: 100%;
   background-color: white;
 }
-p.sum-asset {
-  margin-right: 130px;
-}
 /**
 Nếu không có dữu liệu
  */

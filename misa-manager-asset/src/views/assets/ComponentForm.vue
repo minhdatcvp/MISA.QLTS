@@ -84,7 +84,7 @@
                   class="text-alight-right"
                   title="Hao mòn lũy kế"
                 >
-                  Tỉ lệ HM năm (%)
+                  HM Lũy kế
                 </th>
                 <th style="width: 131px" class="text-alight-right">
                   Gía trị còn lại
@@ -105,7 +105,9 @@
                     label="assetCode"
                   />
                 </td>
-                <td class="out-line" :title="item.fixed_asset_name">{{ item.fixed_asset_name }}</td>
+                <td class="out-line" :title="item.fixed_asset_name">
+                  {{ item.fixed_asset_name }}
+                </td>
                 <td>
                   <input
                     type="text"
@@ -130,7 +132,7 @@
                     @keypress="onlyNumber"
                   />
                 </td>
-                <td @click="showPopupDelete(item)" class="text-alight-center">
+                <td @click="showPopupDelete(index)" class="text-alight-center">
                   <img :src="deleteIcon" alt="delete" />
                 </td>
               </tr>
@@ -192,7 +194,7 @@ import { createPopper } from "@popperjs/core";
 export default {
   components: { DatePicker },
   props: {
-    idItem: String,
+    idItem: String
   },
   data() {
     return {
@@ -219,7 +221,7 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null,
+          resValue: null
         },
         {
           fixed_asset_id: null,
@@ -232,7 +234,7 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null,
+          resValue: null
         },
         {
           fixed_asset_id: null,
@@ -245,7 +247,7 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null,
+          resValue: null
         },
         {
           fixed_asset_id: null,
@@ -258,7 +260,7 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null,
+          resValue: null
         },
         {
           fixed_asset_id: null,
@@ -271,8 +273,8 @@ export default {
           life_time: null,
           production_year: null,
           wearValue: null,
-          resValue: null,
-        },
+          resValue: null
+        }
       ],
       /**
        * Dữ liệu tài sản gọi lên từ api để bind dữ liệu vào bảng trong form
@@ -287,16 +289,16 @@ export default {
           depreciation_year_price: 627237005.6214,
           tracked_year: 2019,
           life_time: -1095589246,
-          production_year: 2006,
-        },
+          production_year: 2006
+        }
       ],
       textCode: "", // mã tài sản khi select
       iData: 0,
       isPopup: false, // trạng thái đóng mở popup
-      itemDelete: {}, // item tài sản cần xóa
+      itemDelete: 0, // item tài sản cần xóa
       dataItem: {}, // Data truyền vào api để post và put
       maxCode: 50, // giới hạn mã chứng từ
-      isCheckCode: false, // kiểm tra cảnh báo
+      isCheckCode: false // kiểm tra cảnh báo
     };
   },
   methods: {
@@ -308,7 +310,7 @@ export default {
       const popper = createPopper(component.$refs.toggle, dropdownList, {});
       return () => popper.destroy();
     },
-     /**
+    /**
      * Gán giá trị vừa chọn cho textCode để tìm trong mảng tài sản dữ liệu mã đó rồi bind vào dữ liệu render
      */
     changeDataAsset(index, dl) {
@@ -342,9 +344,9 @@ export default {
     /**
      * Mở popup xóa tài sản
      */
-    showPopupDelete(item) {
+    showPopupDelete(index) {
       this.isPopup = true;
-      this.itemDelete = item;
+      this.itemDelete = index;
     },
     /**
      * Đóng popup xóa
@@ -407,17 +409,6 @@ export default {
       }
     },
     // /**
-    //  * Format lại giá trên form
-    //  */
-    // formatPrice(value) {
-    //   if (value != null) {
-    //     // Làm tròn rồi chèn dấu .
-    //     let val = (value / 1).toFixed(0).replace(".", ",");
-    //     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    //   }
-    //   return value;
-    // },
-    // /**
     //  * giới hạn kí tự khi nhập vào input mã
     //  */
     checkMaxLegthCode() {
@@ -428,7 +419,7 @@ export default {
             group: "foo",
             title: "Cảnh báo",
             text: "Mã tài sản không được nhập quá " + this.maxCode + " kí tự",
-            type: "error",
+            type: "error"
           });
         }
       }
@@ -441,10 +432,20 @@ export default {
       this.$emit("resetItem");
     },
     sumPrice() {
-      var sum = 0;
+      let sum = 0;
       for (let i = 0; i < this.dataAssetForm.length; i++) {
-        sum += parseInt(this.dataAssetForm[i].resValue);
+        if (this.dataAssetForm[i].resValue == null) {
+          sum += 0;
+        } else {
+          sum += parseFloat(this.dataAssetForm[i].resValue);
+        }
       }
+      // this.dataAssetForm.forEach(element => {
+      // if(element.resValue == null){
+      //   element.resValue == 0;
+      // }
+      //   sum += parseInt(element.resValue);
+      // });
       return sum;
     },
     /**
@@ -457,7 +458,7 @@ export default {
           group: "foo",
           title: "Cảnh báo",
           text: this.validateData.msg,
-          type: "error",
+          type: "error"
         });
         // focus vào ô input
         switch (this.validateData.typeError) {
@@ -475,51 +476,45 @@ export default {
             break;
         }
       } else {
-        //chuyển datetime từ "" -> null
-        // this.dataAssetForm.forEach((element) => {
-        //   if (element.fixed_asset_code == null) {
-        //     this.dataAssetForm.splice(this.dataAssetForm.indexOf(element), 1);
-        //   }
-        // });
-        var filtered = this.dataAssetForm.filter(function (el) {
+        var filtered = this.dataAssetForm.filter(function(el) {
           return el.fixed_asset_code != null;
         });
         this.dataItem.refDetail = JSON.stringify(filtered);
         this.dataItem.costTotal = this.sumPrice();
-        //  debugger // eslint-disable-line
+        this.dataItem.refNo = this.dataItem.refNo.toUpperCase();
+
         if (this.dataItem.refDecrementId == null) {
-          // debugger // eslint-disable-line
           // Thực hiện post
           console.log("post");
           axios
             .post("https://localhost:44392/api/v1/RefDecrements", this.dataItem)
-            .then((response) => {
+            .then(response => {
               if (!response.data.success) {
                 this.$notify({
                   group: "foo",
                   title: "Lỗi",
                   text: response.data.data.userMsg[0],
-                  type: "error",
+                  type: "error"
                 });
               } else {
                 this.$notify({
                   group: "foo",
                   title: "Thành công",
                   text: "Thêm mới thành công",
-                  type: "success",
+                  type: "success"
                 });
                 this.showOffForm();
                 location.reload();
               }
               console.log(response);
             })
-            .catch((error) => {
+            .catch(error => {
               this.$notify({
                 group: "foo",
                 title: "Lỗi",
                 text:
                   "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
-                type: "error",
+                type: "error"
               });
               console.log(error);
             });
@@ -527,39 +522,39 @@ export default {
           // Thực hiện put
           axios
             .put("https://localhost:44392/api/v1/RefDecrements", this.dataItem)
-            .then((response) => {
+            .then(response => {
               if (!response.data.success) {
                 this.$notify({
                   group: "foo",
                   title: "Lỗi",
                   text: response.data.data.userMsg[0],
-                  type: "error",
+                  type: "error"
                 });
               } else {
                 this.$notify({
                   group: "foo",
                   title: "Thành công",
                   text: "Cập nhật thành công",
-                  type: "success",
+                  type: "success"
                 });
                 this.showOffForm();
                 location.reload();
               }
               console.log(response);
             })
-            .catch((error) => {
+            .catch(error => {
               this.$notify({
                 group: "foo",
                 title: "Lỗi",
                 text:
                   "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
-                type: "error",
+                type: "error"
               });
               console.log(error);
             });
         }
       }
-    },
+    }
   },
   computed: {
     // wearValue() {
@@ -580,14 +575,19 @@ export default {
      */
     options() {
       let assetC = [];
-      this.dataAsset.forEach((element) => {
+      var result = [];
+      // let filterCode = this.textCode;
+      this.dataAsset.forEach(element => {
         assetC.push(element.fixed_asset_code);
-        // let optionCode = {};
-        // optionCode.assetCode = element.assetCode;
-        // optionCode.disabled = true;
-        // assetC.push(optionCode);
       });
-      return assetC;
+      
+      this.dataAssetForm.forEach(element => {
+        if (element.fixed_asset_code != null) {
+          result = assetC.filter(code => code != element.fixed_asset_code);
+        }
+      });
+      // const result = assetC.filter(code => code != filterCode);
+      return result;
     },
     //   originalPrice() {
     //     let price = null;
@@ -606,66 +606,70 @@ export default {
       let returnData = {
         error: false,
         msg: "",
-        typeError: "",
+        typeError: ""
       };
       //1. validate để trống
-
+      var filtered = this.dataAssetForm.filter(function(el) {
+        return el.fixed_asset_code != null;
+      });
+      if (filtered.length == 0) {
+        returnData = {
+          error: true,
+          msg: "Phải có ít nhất một chứng từ ghi giảm"
+        };
+      }
       if (this.dataItem.refNo == "" || this.dataItem.refNo == null) {
         returnData = {
           error: true,
           msg: "Vui lòng điền mã chứng từ",
-          typeError: "refNo",
+          typeError: "refNo"
         };
       }
       if (this.dataItem.refDate == "" || this.dataItem.refDate == null) {
         returnData = {
           error: true,
           msg: "vui lòng chọn ngày ghi giảm",
-          typeError: "postDate",
+          typeError: "postDate"
         };
       }
       return returnData;
-    },
+    }
   },
   watch: {
-    textCode: function () {
+    textCode: function() {
+      let data = this.dataAssetForm[this.iData];
       if (this.textCode != "") {
-        this.dataAsset.forEach((element) => {
+        this.dataAsset.forEach(element => {
           if (element.fixed_asset_code == this.textCode) {
-            this.dataAssetForm[this.iData].fixed_asset_id =
-              element.fixed_asset_id;
-            this.dataAssetForm[this.iData].fixed_asset_code =
-              element.fixed_asset_code;
-            this.dataAssetForm[this.iData].fixed_asset_name =
-              element.fixed_asset_name;
-            this.dataAssetForm[this.iData].cost = element.cost;
-            this.dataAssetForm[this.iData].depreciation_rate =
-              element.depreciation_rate;
-            this.dataAssetForm[this.iData].depreciation_year_price =
-              element.depreciation_year_price;
-            this.dataAssetForm[this.iData].tracked_year = element.tracked_year;
-            this.dataAssetForm[this.iData].life_time = element.life_time;
-            this.dataAssetForm[this.iData].production_year =
-              element.production_year;
-              this.dataAssetForm[this.iData].wearValue =this.dataAssetForm[this.iData].cost * this.dataAssetForm[this.iData].life_time * (this.dataAssetForm[this.iData].depreciation_rate / 100);
-            this.dataAssetForm[this.iData].resValue = this.dataAssetForm[this.iData].cost - this.dataAssetForm[this.iData].wearValue;
+            data.fixed_asset_id = element.fixed_asset_id;
+            data.fixed_asset_code = element.fixed_asset_code;
+            data.fixed_asset_name = element.fixed_asset_name;
+            data.cost = element.cost;
+            data.depreciation_rate = element.depreciation_rate;
+            data.depreciation_year_price = element.depreciation_year_price;
+            data.tracked_year = element.tracked_year;
+            data.life_time = element.life_time;
+            data.production_year = element.production_year;
+            data.wearValue =
+              data.cost * data.life_time * (data.depreciation_rate / 100);
+            data.resValue = data.cost - data.wearValue;
           }
         });
       }
       if (this.textCode == null) {
-        this.dataAssetForm[this.iData].fixed_asset_id = null;
-        this.dataAssetForm[this.iData].fixed_asset_code = null;
-        this.dataAssetForm[this.iData].fixed_asset_name = null;
-        this.dataAssetForm[this.iData].cost = null;
-        this.dataAssetForm[this.iData].depreciation_rate = null;
-        this.dataAssetForm[this.iData].depreciation_year_price = null;
-        this.dataAssetForm[this.iData].tracked_year = null;
-        this.dataAssetForm[this.iData].life_time = null;
-        this.dataAssetForm[this.iData].production_year = null;
-        this.dataAssetForm[this.iData].wearValue = null;
-        this.dataAssetForm[this.iData].resValue = null;
+        data.fixed_asset_id = null;
+        data.fixed_asset_code = null;
+        data.fixed_asset_name = null;
+        data.cost = null;
+        data.depreciation_rate = null;
+        data.depreciation_year_price = null;
+        data.tracked_year = null;
+        data.life_time = null;
+        data.production_year = null;
+        data.wearValue = null;
+        data.resValue = null;
       }
-    },
+    }
   },
   /*--------------LIFE CYCLE-----------------------------------------*/
   async created() {
@@ -675,15 +679,15 @@ export default {
     if (this.idItem != null && this.idItem != "") {
       let urlApi =
         "https://localhost:44392/api/v1/RefDecrements/" + this.idItem;
-      axios.get(urlApi).then((reponsive) => {
+      axios.get(urlApi).then(reponsive => {
         this.dataItem = reponsive.data.data;
         this.dataAssetForm = JSON.parse(this.dataItem.refDetail);
       });
     }
-    const assets = await axios.get("https://localhost:44392/api/v1/Assets");
+    const assets =  await axios.get("https://localhost:44392/api/v1/Assets");
     this.dataAsset = assets.data.data;
     // window.addEventListener("keyup", this.addKeyForm);
-  },
+  }
   // beforeUpdate() {
   //   this.dataAssetForm.forEach((element) => {
   //     if (element.fixed_asset_code != null) {
