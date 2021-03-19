@@ -21,6 +21,8 @@
             class="datepicker"
             placeholder="dd-mm-yyyy"
             ref="postDate"
+            @input="checkDate"
+            :editable = "false"
           ></date-picker>
         </div>
         <div class="decrement_number">
@@ -323,6 +325,9 @@ export default {
     };
   },
   methods: {
+    checkDate(){
+      console.log(event.target.value)
+    },
     /**
      * Hiển thị drop-menu sang bên phải
      */
