@@ -4,8 +4,9 @@ import App from './App.vue'
 import { store } from './store/index'
 import Notifications from 'vue-notification'
 import vSelect from 'vue-select'
-import 'devextreme/dist/css/dx.common.css';
-import 'devextreme/dist/css/dx.light.css';
+import VueMask from 'v-mask'
+
+Vue.use(VueMask)
 Vue.component('v-select', vSelect)
 Vue.use(Notifications)
 Vue.config.productionTip = false

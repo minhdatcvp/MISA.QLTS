@@ -47,6 +47,7 @@ tbody {
     padding-top: 3px;
     padding-left: 12px;
     padding-bottom: 2px;
+    cursor: pointer;
 }
 
 .table tbody td,
@@ -149,6 +150,10 @@ tbody tr:hover .fuctionCol div {
 .text-alight-right {
     text-align: right !important;
     padding-right: 13px !important;
+    padding-left: 13px !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 table tbody tr:hover .text-alight-right {

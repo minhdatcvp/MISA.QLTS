@@ -56,16 +56,16 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] T entity)
         {
-            //var res = new ServiceResult();
-            //try
-            //{
-               var res = _baseService.Insert(entity);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex);
-            //    res.Success = false;
-            //}
+            var res = new ServiceResult();
+            try
+            {
+                res = _baseService.Insert(entity);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                res.Success = false;
+            }
             return new JsonResult(res);
         }
         // POST api/<CustomersController>

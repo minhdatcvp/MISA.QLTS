@@ -17,7 +17,7 @@
         <!-- Icon refresh  -->
         <img :src="refreshIcon" alt="refresh" @click="reRender" />
         <!-- Icon delete  -->
-        <img :src="deleteIcon" alt="delete" @click="isdeleteAllItem" />
+        <img :src="deleteIcon" alt="delete"/>
       </div>
     </div>
     <!-- Mục danh sách item  -->
@@ -46,16 +46,8 @@
             :key="index"
             :class="{ highlight: isActive == index }"
             @click="activeItem(index)"
+            @dblclick="getItem(item)"
           >
-            <td v-if="isCheckbox" class="check-box">
-              <input
-                type="checkbox"
-                id="vehicle1"
-                name="vehicle1"
-                :value="item"
-                v-model="idDeletes"
-              />
-            </td>
             <td class="order">{{ index + 1 }}</td>
             <td class="posted_date">
               {{ format_date(item.postedDate) }}
@@ -121,32 +113,13 @@ export default {
       decrement: [],
       idItem: null, // id truyền xuống form
       isActive: 0, // lưu item đang được trỏ tới
-      //   componentKey: 0, // Biến refresh table
       isCheckbox: false, // Hiển thị checkbox
-      //   itemTemp: {}, // Data 1 tài sản đẩy lên form
       textSearch: "", // lưu trữ kí tự tìm kiếm
       idDeletes: [], // lưu id delete
-      //   departmentFilter: "", // id lọc phòng ban
-      //  decrementTypeFilter: "", // id lọc loại
       isPopup: false, // đóng mở popup thông báo xóa
-      //   decrementTypes: [], // Dữ liệu loại tài sản
-      //   departments: [] // Dữ liệu phòng ban
     };
   },
   methods: {
-    /**
-     * Dùng bàn phim để lên xuống table
-     */
-    // addKeyList(e) {
-    //   if (!this.isForm) {
-    //     if (e.which == 38 && this.isActive > 0) {
-    //       this.isActive--;
-    //     }
-    //     if (e.which == 40 && this.isActive < this.decrement.length - 1) {
-    //       this.isActive++;
-    //     }
-    //   }
-    // },
     /**
      * gán giá trị isActive bằng index để khi click vào item nào chuyển active đến item đó
      */
@@ -158,16 +131,6 @@ export default {
      */
     reRender() {
       location.reload();
-    },
-    /**
-     * Bật checkbox để xáo nhiều item
-     * Khi tắt checkbox bỏ tích các checkbox
-     */
-    isdeleteAllItem() {
-      this.isCheckbox = !this.isCheckbox;
-      if (this.isCheckbox == false) {
-        this.idDeletes = [];
-      }
     },
     /**
      * Hiển thị Form
@@ -202,8 +165,8 @@ export default {
      */
     formatPrice(value) {
       if (value != null) {
-        let val = (value / 1).toFixed(3).replace(".", ",");
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        let val = (value / 1).toFixed(3).replace(",", ".");
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
     },
     /**
@@ -269,22 +232,6 @@ export default {
       }
       this.offPopupDelete();
     },
-    /**
-     * Xóa nhiều tài sản cùng 1 lúc
-     */
-    deletesAsset() {
-      if (this.idDeletes.length == 0) {
-        // alert("Bạn chưa chọn tài sản xóa");
-        this.$notify({
-          group: "foo",
-          title: "Cảnh báo",
-          text: "Bạn chưa chọn tài sản xóa!",
-          type: "error",
-        });
-      } else {
-        this.showPopupDeletes();
-      }
-    },
   },
   computed: {
     /**
@@ -330,10 +277,6 @@ export default {
       "https://localhost:44392/api/v1/RefDecrements"
     );
     this.decrement = decrement.data.data;
-    /**
-     * Thêm sự kiện phím
-     */
-    // window.addEventListener("keyup", this.addKeyList);
   },
 };
 </script>

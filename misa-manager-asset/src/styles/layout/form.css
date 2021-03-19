@@ -73,3 +73,7 @@ form footer {
     color: white;
     background-color: #2a90e9;
 }
+
+.mx-table-date .today {
+    background-color: #4f5a65;
+}
