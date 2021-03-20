@@ -191,7 +191,6 @@
         </div>
       </div>
     </transition>
-    <notifications group="foo" style="z-index:999999"/>
   </div>
 </template>
 
@@ -328,6 +327,15 @@ export default {
   },
   methods: {
     /**
+     * Sự kiện sử dụng phím
+     */
+    eventKeyForm(e){
+      if(e.which == 27){
+        e.preventDefault();
+        this.showOffForm();
+      }
+    },
+    /**
      * Hiển thị drop-menu sang bên phải
      */
     withPopper(dropdownList, component, { width }) {
@@ -358,7 +366,6 @@ export default {
       this.iData = 0;
       this.dataAssetForm = [];
     },
-
     /*-------------------Nghiệp vụ popup----------------------------*/
     /**
      * Mở popup xóa tài sản
@@ -433,6 +440,9 @@ export default {
       this.$store.dispatch("offForm");
       this.$emit("resetItem");
     },
+    /**
+     * Đóng form khi thêm hoặc edit thành công
+     */
     showOffFormSuccess(){
       this.$store.dispatch("offForm");
       this.$emit("success");
@@ -669,6 +679,7 @@ export default {
     assets.data.data.forEach(element => {
       this.options.push(element.fixed_asset_code);
     });
+    window.addEventListener("keyup", this.eventKeyForm)
   }
 };
 </script>

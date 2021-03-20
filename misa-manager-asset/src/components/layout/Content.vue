@@ -4,11 +4,6 @@
   <div class="right-page" :class="{ isRightPage: isMenu }">
     <Header />
     <!-- Phần sử dụng router  -->
-    <!-- <loading
-      :active.sync="isLoading"
-      :can-cancel="false"
-      :is-full-page="fullPage"
-    ></loading> -->
     <component-list @reloader="reloader" :key="componentKey" />
   </div>
 </template>
@@ -28,9 +23,6 @@ Vue.use(
     height: 50,
     width : 50,
     backgroundColor: "rgb(204 201 201)",
-  },
-  {
-    // slots
   }
 );
 export default {

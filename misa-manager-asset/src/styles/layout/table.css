@@ -74,7 +74,7 @@ table tbody tr:hover {
 
 /* Vẽ icon cho phần chức năng */
 
-.editIcon {
+.edit-icon {
     background: url("../../assets/icon.png") no-repeat -15px -15px;
     width: 15px;
     height: 16px;
@@ -88,7 +88,7 @@ table tbody tr:hover {
     cursor: pointer;
 }
 
-td.fuctionCol {
+td.fuction-col {
     display: flex;
     border-bottom: none !important;
     text-align: center;
@@ -96,7 +96,7 @@ td.fuctionCol {
     padding-left: 20px !important;
 }
 
-.fuctionCol div {
+.fuction-col div {
     margin: 7px;
     opacity: 0;
     visibility: hidden;
@@ -125,7 +125,7 @@ td.fuctionCol {
 
 /* khi hover vào hiển thị chức năng */
 
-tbody tr:hover .fuctionCol div {
+tbody tr:hover .fuction-col div {
     opacity: 1;
     visibility: visible;
 }
@@ -133,7 +133,7 @@ tbody tr:hover .fuctionCol div {
 
 /*item nào được active thì hiển thị cột chức năg */
 
-.highlight .fuctionCol div {
+.highlight .fuction-col div {
     opacity: 1;
     visibility: visible;
 }

@@ -25,9 +25,6 @@
       <table class="table">
         <thead>
           <tr>
-            <th v-if="isCheckbox" width="1%">
-              <img :src="deleteIcon" alt="delete" @click="deletesAsset" />
-            </th>
             <th width="2%" class="order">STT</th>
             <th width="6%" class="posted_date">NGÀY GHI GIẢM</th>
             <th width="15%">SỐ CHỨNG TỪ</th>
@@ -35,7 +32,7 @@
               LÝ DO GHI GIẢM
             </th>
             <th width="8%" class="cost_total">GIÁ TRỊ CÒN LẠI</th>
-            <th width="5%" class="fuctionCol">CHỨC NĂNG</th>
+            <th width="5%" class="fuction-col">CHỨC NĂNG</th>
           </tr>
         </thead>
         <tbody v-if="decrement.length > 0">
@@ -57,8 +54,8 @@
             <td class="text-alight-right">
               {{ formatPrice(item.costTotal) }}
             </td>
-            <td class="fuctionCol">
-              <div class="editIcon" title="Sửa" @click="getItem(item)"></div>
+            <td class="fuction-col">
+              <div class="edit-icon" title="Sửa" @click="getItem(item)"></div>
               <div
                 class="deleteIcon"
                 @click="showPopupDelete(item)"
@@ -125,6 +122,7 @@ export default {
     };
   },
   methods: {
+    
     /**
      * gán giá trị isActive bằng index để khi click vào item nào chuyển active đến item đó
      */
@@ -135,7 +133,7 @@ export default {
      * Reset lại bảng dữ liệu
      */
     reRender() {
-      location.reload();
+      this.success();
     },
     /**
      * Hiển thị Form
@@ -287,6 +285,7 @@ export default {
       "https://localhost:44392/api/v1/RefDecrements"
     );
     this.decrement = decrement.data.data;
+    
   }
 };
 </script>
