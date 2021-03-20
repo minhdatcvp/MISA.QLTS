@@ -17,7 +17,7 @@
         <!-- Icon refresh  -->
         <img :src="refreshIcon" alt="refresh" @click="reRender" />
         <!-- Icon delete  -->
-        <img :src="deleteIcon" alt="delete"/>
+        <img :src="deleteIcon" alt="delete" />
       </div>
     </div>
     <!-- Mục danh sách item  -->
@@ -88,7 +88,12 @@
       </div>
     </transition>
     <!-- Hiển thị form khi isForm = true , ẩn khi isForm = false  -->
-    <component-form v-if="isForm" :idItem="idItem" @resetItem="resetItem" />
+    <component-form
+      v-if="isForm"
+      :idItem="idItem"
+      @resetItem="resetItem"
+      @success="success"
+    />
     <footer>
       <p>Tổng số chứng từ : {{ decrement.length }}</p>
       <p class="sum-asset">Tổng giá trị còn lại: {{ formatPrice(sumPrice) }}</p>
@@ -103,7 +108,7 @@ import ComponentForm from "./ComponentForm.vue";
 import moment from "moment";
 export default {
   components: {
-    ComponentForm,
+    ComponentForm
   },
   data() {
     return {
@@ -116,7 +121,7 @@ export default {
       isCheckbox: false, // Hiển thị checkbox
       textSearch: "", // lưu trữ kí tự tìm kiếm
       idDeletes: [], // lưu id delete
-      isPopup: false, // đóng mở popup thông báo xóa
+      isPopup: false // đóng mở popup thông báo xóa
     };
   },
   methods: {
@@ -151,6 +156,10 @@ export default {
      */
     resetItem() {
       this.idItem = "";
+    },
+    success() {
+      this.idItem = "";
+      this.$emit("reloader");
     },
     /**
      * Format lại ngày tháng năm
@@ -201,37 +210,37 @@ export default {
           this.itemDelete.refDecrementId;
         axios
           .delete(apiUrl)
-          .then((response) => {
+          .then(response => {
             if (!response.data.success) {
               this.$notify({
                 group: "foo",
                 title: "Lỗi",
                 text:
                   "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
-                type: "error",
+                type: "error"
               });
             } else {
               this.$notify({
                 group: "foo",
                 title: "Thành công",
                 text: "Xóa tài sản thành công",
-                type: "success",
+                type: "success"
               });
             }
             console.log(response);
           })
-          .catch((error) => {
+          .catch(error => {
             this.$notify({
               group: "foo",
               title: "Lỗi",
               text: "Đã có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp",
-              type: "error",
+              type: "error"
             });
             console.log(error);
           });
       }
       this.offPopupDelete();
-    },
+    }
   },
   computed: {
     /**
@@ -256,17 +265,18 @@ export default {
     filteredRefDecrement() {
       let filterText = this.textSearch;
 
-      return this.decrement.filter(function (item) {
+      return this.decrement.filter(function(item) {
         let filtered = true;
         if (filtered) {
           if (filterText && filterText.length > 0) {
-            filtered =
-              item.refNo.toLowerCase().includes(filterText.toLowerCase())
+            filtered = item.refNo
+              .toLowerCase()
+              .includes(filterText.toLowerCase());
           }
         }
         return filtered;
       });
-    },
+    }
   },
   // call api lấy toàn bộ dữ liệu tài sản
   async created() {
@@ -277,7 +287,7 @@ export default {
       "https://localhost:44392/api/v1/RefDecrements"
     );
     this.decrement = decrement.data.data;
-  },
+  }
 };
 </script>
 

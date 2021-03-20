@@ -10,7 +10,6 @@ Vue.use(VueMask)
 Vue.component('v-select', vSelect)
 Vue.use(Notifications)
 Vue.config.productionTip = false
-
 new Vue({
     // khai báo store.
     store,

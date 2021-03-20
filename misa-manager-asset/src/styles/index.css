@@ -35,3 +35,7 @@ body {
 .vs__actions {
     display: none;
 }
+
+.vue-notification-group {
+    z-index: 99999 !important;
+}

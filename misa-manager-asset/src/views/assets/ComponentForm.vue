@@ -21,8 +21,8 @@
             class="datepicker"
             placeholder="dd-mm-yyyy"
             ref="postDate"
-            @input="checkDate"
             :editable = "false"
+            
           ></date-picker>
         </div>
         <div class="decrement_number">
@@ -36,6 +36,7 @@
             @input="checkMaxLegthCode"
             @keypress="onlyCode"
             :class="{ warnning: isCheckCode }"
+            @keypress.enter="addDataAsset"
           />
           <span v-if="isCheckCode">Không được nhập kí tự đặc biệt</span>
         </div>
@@ -190,6 +191,7 @@
         </div>
       </div>
     </transition>
+    <notifications group="foo" style="z-index:999999"/>
   </div>
 </template>
 
@@ -325,9 +327,6 @@ export default {
     };
   },
   methods: {
-    checkDate(){
-      console.log(event.target.value)
-    },
     /**
      * Hiển thị drop-menu sang bên phải
      */
@@ -393,7 +392,6 @@ export default {
         // 46 is dot
         $event.preventDefault();
       }
-      // if(this.dataAssetForm[])
     },
     /*-------------Validate mã chứng từ ---------------------------*/
     /**
@@ -434,6 +432,10 @@ export default {
     showOffForm() {
       this.$store.dispatch("offForm");
       this.$emit("resetItem");
+    },
+    showOffFormSuccess(){
+      this.$store.dispatch("offForm");
+      this.$emit("success");
     },
     /**
      * Tính tổng giá trị còn lại để đẩy lên api
@@ -504,8 +506,7 @@ export default {
                   text: "Thêm mới thành công",
                   type: "success"
                 });
-                this.showOffForm();
-                location.reload();
+                this.showOffFormSuccess();
               }
               console.log(response);
             })
@@ -528,7 +529,7 @@ export default {
                 this.$notify({
                   group: "foo",
                   title: "Lỗi",
-                  text: response.data.data.userMsg[0],
+                  text: response.data.data.userMsg[0],  
                   type: "error"
                 });
               } else {
@@ -536,10 +537,9 @@ export default {
                   group: "foo",
                   title: "Thành công",
                   text: "Cập nhật thành công",
-                  type: "success"
+                  type: "success",
                 });
-                this.showOffForm();
-                location.reload();
+                this.showOffFormSuccess();
               }
               console.log(response);
             })
