@@ -9,6 +9,7 @@ namespace MISA.QLTS.BACKEND.SERVICE.Interface
     /// <summary>
     ///Interface tham chiếu tới service chứng từ
     /// </summary>
+    /// CreatedBy : NMDAT(14/03/2021)
     public interface IRefDecrementService : IBaseService<RefDecrement>
     {
     }

@@ -8,6 +8,7 @@ namespace MISA.QLTS.BACKEND.DATALAYER.Interface
     /// <summary>
     /// Interface tham chiếu tới Danh sách chứng từ
     /// </summary>
+    /// CreatedBy : NMDAT(14/03/2021)
     public interface IRefDecrementData : IBaseData<RefDecrement>
     {
         /// <summary>

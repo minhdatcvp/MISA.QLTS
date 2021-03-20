@@ -658,6 +658,7 @@ export default {
         data.wearValue = null;
         data.resValue = null;
       }
+      this.textCode = "";
     }
   },
   /*--------------LIFE CYCLE-----------------------------------------*/

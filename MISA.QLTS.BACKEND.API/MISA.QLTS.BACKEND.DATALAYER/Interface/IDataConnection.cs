@@ -10,6 +10,7 @@ namespace MISA.QLTS.BACKEND.DATALAYER.Interface
     /// Interface tham chiếu tới class kết nối database
     /// </summary>
     /// <typeparam name="T">(Entity : Asset or Decrement)</typeparam>
+    /// CreatedBy : NMDAT(14/03/2021)
     public interface IDataConnection<T>
     {
         /// <summary>

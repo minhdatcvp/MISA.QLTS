@@ -11,6 +11,7 @@ namespace MISA.QLTS.BACKEND.SERVICE
     /// Base service dùng chung xử lý các nghiệp vụ
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// CreatedBy : NMDAT(14/03/2021)
     public class BaseService<T> : IBaseService<T>
     {
         private readonly IBaseData<T> _baseData;

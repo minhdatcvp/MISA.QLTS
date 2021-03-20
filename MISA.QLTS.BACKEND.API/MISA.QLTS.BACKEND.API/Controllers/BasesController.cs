@@ -14,6 +14,7 @@ namespace MISA.QLTS.BACKEND.API.Controllers
     /// Base Controller viết các đầu API chung
     /// </summary>
     /// <typeparam name="T">Entity</typeparam>
+    /// CreatedBy : NMDAT (14/03/2021)
     [Route("api/v1/[controller]")]
     [ApiController]
     public class BasesController<T> : ControllerBase

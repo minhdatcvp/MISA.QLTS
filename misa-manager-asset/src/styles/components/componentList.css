@@ -1,0 +1,78 @@
+/*------------------------------*/
+
+
+/*-------Toàn bộ nội dung------------------*/
+
+.content-list {
+    margin: 15px 20px;
+    position: relative;
+    height: calc(100vh - 65px);
+}
+
+
+/*-------Phần tìm kiếm và thêm mới-----------*/
+
+.filter-bar {
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+}
+
+
+/*-------- ô input tìm kiếm------------------- */
+
+#txtSearch {
+    width: 299px;
+    height: 31px;
+    padding-top: 9px;
+    padding-left: 15px;
+    padding-bottom: 8px;
+    font-style: italic;
+}
+
+.icon-search {
+    background-image: url("../../assets/search.png");
+    background-repeat: no-repeat;
+    background-position: 275px center;
+}
+
+
+/*---------Phần thêm mới , icon xóa,icon reset ---*/
+
+.filter-right img {
+    border: 1.2px solid #e0e0e0;
+    color: #7b7a8d;
+    padding: 8px;
+    margin-left: 11px;
+    border-radius: 2.5px;
+}
+
+
+/*-------Phần dưới dùng----------------------*/
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 20px;
+    height: 40px;
+    width: 100%;
+    background-color: white;
+}
+
+
+/**
+  Nếu không có dữu liệu
+   */
+
+.notData {
+    width: 100%;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.notData h1 {
+    font-size: 25px;
+}

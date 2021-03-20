@@ -9,6 +9,7 @@ namespace MISA.QLTS.BACKEND.SERVICE.Interface
     /// interface tham chiếu tới service cha
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// CreatedBy: NMDAT(14/03/2021)
     public interface IBaseService<T>
     {
         /// <summary>

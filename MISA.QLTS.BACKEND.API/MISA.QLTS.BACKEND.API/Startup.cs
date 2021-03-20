@@ -42,11 +42,9 @@ namespace MISA.QLTS.BACKEND.API
             //DataLayer
             services.AddScoped<IAssetData, AssetData>();
             services.AddScoped<IRefDecrementData, RefDecrementData>();
-            //services.AddScoped<IDbConnectionDepartment, DbConnectionDepartment>();
             //Service
             services.AddScoped<IAssetService, AssetService>();
             services.AddScoped<IRefDecrementService, RefDecrementService>();
-            //services.AddScoped<IDepartmentService, DepartmentService>();
 
             // xu ly cors
             services.AddCors();
