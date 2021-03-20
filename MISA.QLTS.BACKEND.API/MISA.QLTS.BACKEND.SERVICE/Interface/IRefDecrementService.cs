@@ -11,7 +11,5 @@ namespace MISA.QLTS.BACKEND.SERVICE.Interface
     /// </summary>
     public interface IRefDecrementService : IBaseService<RefDecrement>
     {
-       
-        ServiceResult Deletes(string param);
     }
 }

@@ -10,13 +10,6 @@ namespace MISA.QLTS.BACKEND.DATALAYER.Interface
     /// </summary>
     public interface IRefDecrementData : IBaseData<RefDecrement>
     {
-       
-        /// <summary>
-        /// Xóa nhiều chứng từ
-        /// </summary>
-        /// <param name="param"></param>
-        /// <returns></returns>
-        int Deletes(string param);
         /// <summary>
         /// Check trùng mã
         /// </summary>

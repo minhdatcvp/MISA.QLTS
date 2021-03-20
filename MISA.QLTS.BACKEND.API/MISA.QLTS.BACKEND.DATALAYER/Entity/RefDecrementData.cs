@@ -9,6 +9,10 @@ using System.Text;
 
 namespace MISA.QLTS.BACKEND.DATALAYER.Entity
 {
+    /// <summary>
+    /// Tầng Data Chứng từ
+    /// </summary>
+    /// CreatedBy: NMDAT(14/03/2021)
     public class RefDecrementData: BaseData<RefDecrement>, IRefDecrementData
     {
         // Khởi tạo tham chiếu interface
@@ -22,28 +26,6 @@ namespace MISA.QLTS.BACKEND.DATALAYER.Entity
         #endregion
 
         #region Method
-        
-        /// <summary>
-        /// Xóa nhiều bản ghi cùng lúc
-        /// </summary>
-        /// <param name="param">Mảng các id</param>
-        /// <returns></returns>
-        public int Deletes(string param)
-        {
-            // lấy tên bảng
-            var className = typeof(RefDecrement).Name;
-            var paramId = param.Split(",");
-            var id = string.Empty;
-            foreach (var item in paramId)
-            {
-                id += "," + "'" + $"{item}" + "'";
-            }
-            id = id.Remove(0, 1);
-            // câu lệnh truy vấn
-            var sqlCommand = $"DELETE FROM ref_decrement WHERE ref_decrement_id IN ({id})";
-            var result = _dataConnection.Excute(sqlCommand);
-            return result;
-        }
         /// <summary>
         /// Kiểm tra mã tài sản đã tồn tại hay chưa
         /// </summary>

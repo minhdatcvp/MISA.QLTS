@@ -24,35 +24,6 @@ namespace MISA.QLTS.BACKEND.SERVICE.Entity
         #endregion
 
         #region Method
-        ///// <summary>
-        ///// Xử lý nghiệp vụ xóa
-        ///// </summary>
-        ///// <param name="entity">thực thể cần xóa</param>
-        ///// <returns></returns>
-        public virtual ServiceResult Deletes(string param)
-        {
-            // Khởi tạo reponsive database
-            var serviceResult = new ServiceResult();
-
-            // Gọi đến method queyry của dbContex để thực hiện truy vấn vào database
-            serviceResult.Data = _dbConnectionRefDecrement.Deletes(param);
-            if (serviceResult.Data != null)
-            {
-                serviceResult.MisaCode = MISACode.Success;
-                serviceResult.Success = true;
-            }
-            else
-            {
-                ErrorMsg errorMsg = new ErrorMsg();
-                errorMsg.DevMsg = MISA.QLTS.BACKEND.COMMON.Properties.Resources.Msg_Dev;
-                errorMsg.MoreInfo = MISA.QLTS.BACKEND.COMMON.Properties.Resources.MoreInfo;
-                errorMsg.UserMsg.Add(MISA.QLTS.BACKEND.COMMON.Properties.Resources.Error_UserMsg);
-                serviceResult.Data = errorMsg;
-                serviceResult.MisaCode = MISACode.NotValid;
-                serviceResult.Success = false;
-            }
-            return serviceResult;
-        }
         /// <summary>
         /// Override Validate insert từ BaseService
         /// </summary>

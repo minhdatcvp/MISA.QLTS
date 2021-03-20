@@ -7,6 +7,10 @@ using System.Text;
 
 namespace MISA.QLTS.BACKEND.SERVICE
 {
+    /// <summary>
+    /// Base service dùng chung xử lý các nghiệp vụ
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class BaseService<T> : IBaseService<T>
     {
         private readonly IBaseData<T> _baseData;
