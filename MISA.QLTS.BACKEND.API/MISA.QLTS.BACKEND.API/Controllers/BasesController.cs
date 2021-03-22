@@ -22,7 +22,6 @@ namespace MISA.QLTS.BACKEND.API.Controllers
         /// <summary>
         /// Khai báo interface tham chiếu đến BaseService
         /// </summary>
-        /// CreatedBy: NMDAT(14/03/2021)
         IBaseService<T> _baseService;
         public BasesController(IBaseService<T> baseService)
         {

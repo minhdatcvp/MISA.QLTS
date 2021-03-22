@@ -10,6 +10,7 @@
           <img :src="closeIcon" alt="icon" @click="showOffForm" />
         </div>
       </div>
+      <!-- Phần input ngày ghi giảm và số chứng từ  -->
       <div class="input_form">
         <div class="date_input">
           <label>Ngày ghi giảm</label>
@@ -41,6 +42,7 @@
           <span v-if="isCheckCode">Không được nhập kí tự đặc biệt</span>
         </div>
       </div>
+      <!-- Phần textarea ghi lý do ghi giảm  -->
       <div class="journal_memo">
         <label>Lý do ghi giảm</label>
         <div class="memo">
@@ -53,6 +55,7 @@
           ></textarea>
         </div>
       </div>
+      <!-- Phần table ghi các tài sản ghi giảm  -->
       <div class="table-form">
         <p>Danh sách tài sản</p>
         <div class="table-asset">
@@ -150,6 +153,7 @@
           <!-- ----------------------------- -->
         </div>
       </div>
+      <!-- Phần thêm dòng và xóa dòng  -->
       <div class="event-line">
         <div class="add-line">
           <button type="button" class="btn-add" @click.prevent="addLine">
@@ -165,6 +169,7 @@
           </button>
         </div>
       </div>
+      <!-- Phần footer : nút hủy - tắt form ; nút lưu để thêm hoặc sửa  -->
       <footer>
         <!-- Khi click vào nút hủy tắt form và reset dữ liệu  -->
         <button class="btn-add btn-cancel" @click.prevent="showOffForm">
@@ -315,7 +320,7 @@ export default {
         }
       ],
       textCode: "", // mã tài sản khi select
-      iData: 0,
+      iData: 0,     // index tài sản trong bảng
       isPopup: false, // trạng thái đóng mở popup
       itemDelete: 0, // item tài sản cần xóa
       dataItem: {}, // Data truyền vào api để post và put
@@ -336,7 +341,7 @@ export default {
       }
     },
     /**
-     * Hiển thị drop-menu sang bên phải
+     * Hiển thị drop-menu
      */
     withPopper(dropdownList, component, { width }) {
       dropdownList.style.width = width;
@@ -379,7 +384,6 @@ export default {
      */
     offPopupDelete() {
       this.isPopup = false;
-      // this.itemDelete = {};
     },
     /**
      * Xóa tài sản khi bấm xóa ở popup
@@ -433,8 +437,9 @@ export default {
         }
       }
     },
+    /* --------------Nghiệp vụ phần footer------------------------ */
     /**
-     * Tắt form và xóa dữ liệu item
+     * Tắt form và xóa dữ liệu item và không lưu
      */
     showOffForm() {
       this.$store.dispatch("offForm");
@@ -509,6 +514,7 @@ export default {
                   text: response.data.data.userMsg[0],
                   type: "error"
                 });
+                this.$refs.refNo.focus();
               } else {
                 this.$notify({
                   group: "foo",
@@ -542,6 +548,7 @@ export default {
                   text: response.data.data.userMsg[0],  
                   type: "error"
                 });
+                this.$refs.refNo.focus();
               } else {
                 this.$notify({
                   group: "foo",
@@ -686,6 +693,7 @@ export default {
 </script>
 
 <style scoped>
+/* Tiêu đồ input */
 label {
   font-size: 13px;
   color: #373737;
@@ -707,27 +715,15 @@ label {
   color: red;
   position: absolute;
 }
-.form-row {
-  margin-left: 20px;
-  margin-right: 20px;
-}
 .warnning {
   border: 1px solid red;
-}
-p.textWarning {
-  font-size: 11px;
-  margin-bottom: -10px;
-  color: #e24949;
-  margin-top: 5px;
-  font-weight: 100;
-}
-.input-disabled {
-  background-color: #f5f5f5;
-  border: 1px solid #e8e8e8;
 }
 /**
   Phần nhập ngày và số chứng từ
 */
+.ref-no{
+  text-transform: uppercase;
+}
 .input_form {
   display: flex;
   margin-left: 20px;
@@ -775,7 +771,7 @@ textarea#journal_memo {
   padding-bottom: 8px;
   font-size: 13px;
 }
-/**.date_input
+/**
 Bảng danh sách tài sản
  */
 .table-form {
@@ -803,9 +799,6 @@ Bảng danh sách tài sản
 .table-asset input:focus {
   outline: none;
 }
-/* .table-asset .iconDelete {
-  padding-left: 12px;
-} */
 .decrement-sub-grid thead {
   width: 100px !important;
 }
@@ -823,9 +816,10 @@ Bảng danh sách tài sản
   z-index: 10;
 }
 .decrement-sub-grid tbody tr td {
-  height: 34px;
+  height: 35px;
   padding: 0 0 0 0;
   border: #e0e0e0 solid 1px;
+  border-top: none;
   font-size: 13px;
   color: #373737;
   border-right: none;
@@ -891,7 +885,5 @@ i.far.fa-trash-alt {
   padding-left: 11px;
   font-weight: 100;
 }
-.ref-no{
-  text-transform: uppercase;
-}
+
 </style>

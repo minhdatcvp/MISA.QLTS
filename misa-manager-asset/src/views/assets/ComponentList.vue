@@ -8,7 +8,7 @@
           id="txtSearch"
           class="icon-search input-search"
           type="text"
-          placeholder="Tìm kiếm"
+          placeholder="Tìm kiếm số chứng từ"
           v-model="textSearch"
         />
       </div>
@@ -111,18 +111,16 @@ export default {
     return {
       refreshIcon: require("../../assets/icon/refresh.svg"),
       deleteIcon: require("../../assets/icon/trash.svg"),
-      // Dữ liệu lấy về từ api
-      decrement: [],
+      decrement: [],// Dữ liệu lấy về từ api
       idItem: null, // id truyền xuống form
       isActive: 0, // lưu item đang được trỏ tới
       isCheckbox: false, // Hiển thị checkbox
       textSearch: "", // lưu trữ kí tự tìm kiếm
-      idDeletes: [], // lưu id delete
+      itemDelete : {}, // dữ liệu chứng từ muốn xóa
       isPopup: false // đóng mở popup thông báo xóa
     };
   },
   methods: {
-    
     /**
      * gán giá trị isActive bằng index để khi click vào item nào chuyển active đến item đó
      */
@@ -135,6 +133,7 @@ export default {
     reRender() {
       this.success();
     },
+    /*-------------Xử lý dữ liệu truyền vào form và đóng tắt form-------*/
     /**
      * Hiển thị Form
      */
@@ -142,7 +141,7 @@ export default {
       this.$store.dispatch("onForm");
     },
     /**
-     * Sửa lại giá trị ngày tháng rồi đẩy dữ liệu lên form edit
+     * Truyền Id của chứng từ cần edit xuống component form
      */
     getItem(item) {
       this.idItem = item.refDecrementId;
@@ -155,10 +154,14 @@ export default {
     resetItem() {
       this.idItem = "";
     },
+    /**
+     * Khi bấm lưu trên form thành công thực hiện gọi hàm loader
+     */
     success() {
       this.idItem = "";
       this.$emit("reloader");
     },
+    /*------------Format các giá trị-----------------------------*/
     /**
      * Format lại ngày tháng năm
      */
@@ -176,6 +179,7 @@ export default {
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
     },
+    /*--------------------Đóng mở Popup Xóa----------------------------*/
     /**
      * click vào icon xóa hiện ra popup
      */
@@ -183,23 +187,17 @@ export default {
       this.isPopup = true;
       this.itemDelete = item;
     },
-    showPopupDeletes() {
-      this.isPopup = true;
-    },
     /**
-     * click vào icon xóa hiện ra popup
+     * click vào nút hủy để tắt popup
      */
     offPopupDelete() {
       this.isPopup = false;
-      // this.itemDelete = {};
     },
     /**
      * Xóa 1 object trong database ảo
      * Call api xóa trên database thực
      */
     deleteItem() {
-      if (this.idDeletes.length == 0) {
-        // console.log(this.itemDelete.refDecrementId);
         // xóa trong mảng
         this.decrement.splice(this.decrement.indexOf(this.itemDelete), 1);
         // call api xóa trên database
@@ -236,13 +234,12 @@ export default {
             });
             console.log(error);
           });
-      }
       this.offPopupDelete();
     }
   },
   computed: {
     /**
-     * Ânr hiện form
+     * Ẩn hiện form
      */
     isForm() {
       return this.$store.state.isForm;
